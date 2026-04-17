@@ -1,0 +1,143 @@
+# Lógica de Procesos: Del Excel al Sistema Digital
+
+## 1. Proceso: Creación de Póliza Nueva (Venta Nueva)
+*Este flujo asegura que ninguna póliza nazca sin sus "papeles" bajo el brazo.*
+
+1. **Trigger:** El gestor recibe la solicitud (Agente o Propio).
+2. **Registro de Data:** Se llenan los campos que ya conoces (Ramo, Compañía, Suma Asegurada, Inicio/Fin).
+   - **Lógica de Asignación:** Si el campo `Asignado` != "Interno/Propio", el sistema habilita el selector de `Agentes Externos`.
+3. **Generación de Checklist:** Según el Ramo (ej. Automóvil), el sistema bloquea el botón "Guardar" y muestra: 
+   - ⚠️ *Falta: Cédula del Cliente*
+   - ⚠️ *Falta: Circulación*
+4. **Módulo de Carga:** El usuario sube el PDF. Aquí entra tu módulo de **Spliteo**. El gestor corta la cédula y la circulación.
+5. **Finalización:** Al estar los documentos indexados, el estado cambia a **"Vigente"**.
+
+---
+
+## 2. Proceso: Renovación (El "Update" Inteligente)
+*Aquí es donde eliminamos el borrado manual del Excel y creamos el historial.*
+
+1. **Trigger:** El sistema resalta en el Dashboard las pólizas que vencen en 30 días.
+2. **Acción "Renovar":** El usuario da clic en un botón de renovación sobre la póliza vieja.
+3. **Cálculo Automático (Depreciación):** - Si es vehículo, el sistema toma la `Suma Asegurada 2025` y propone la `Suma Asegurada 2026` (ej. -10%).
+   - El usuario ajusta la Prima Total si la aseguradora cambió la tarifa.
+4. **Versionamiento:** - La póliza vieja se mueve a una tabla/pestaña de **"Histórico"**.
+   - Se crea el nuevo registro pero con estado **"Pendiente Documentación"**.
+5. **Actualización Documental:** El sistema pregunta: *"¿Desea mantener los documentos permanentes (Cédula/RUC) o actualizar?"*. Es obligatorio subir la **Nueva Póliza emitida**.
+
+---
+
+## 3. Proceso: Gestión de Lotes (Corporativos/Jurídicos)
+*Manejo de "Padres e Hijos" para no repetir trabajo.*
+
+1. **Creación de Póliza Madre:** Se registran los datos de la empresa (RUC, Representante Legal).
+2. **Importación de Ítems:** Subida masiva de los 50 vehículos (como el ejemplo de Acero y Válvulas).
+3. **Carga Única:** Se suben los documentos legales de la empresa **UNA SOLA VEZ**. El sistema los vincula automáticamente a los 50 vehículos.
+4. **Spliteo Masivo:** El gestor abre el PDF que trae las 50 circulaciones juntas y va asignando: *"Pág 5 va para el ítem con Placa M-123"*.
+
+---
+
+## 4. Proceso: Reclamos (Siniestros)
+*Flujo reactivo con control de cierre.*
+
+1. **Apertura:** Se busca al cliente por RUC o Placa. El sistema muestra sus pólizas vigentes.
+2. **Selección:** Se elige la póliza afectada.
+3. **Checklist de Siniestro:** El sistema pide los documentos específicos del choque/evento.
+4. **Seguimiento:** El reclamo queda en estado **"Abierto / En Proceso"**. 
+5. **Cierre Digital:** Para pasar a **"Cerrado / Pagado"**, el sistema exige cargar el documento de "Finiquito" o "Comprobante de Pago" de la aseguradora.
+
+---
+
+## 5. Proceso: Cobranza (Conciliación de Reportes)
+*El fin de las llamadas a ciegas.*
+
+1. **Carga de Reporte:** El usuario recibe el Excel de morosos de la aseguradora y lo "suelta" en el sistema.
+2. **Match de Datos:** El sistema compara `Número de Póliza` del Excel externo vs. `Base de Datos Interna`.
+3. **Actualización de Estados:** - Si el cliente estaba como "Pendiente" y ya no aparece en el reporte -> El sistema lo marca como **"Al Día"**.
+   - Si aparece con deuda -> El sistema genera una tarea en la bandeja de **"Cobranzas"** para llamar al cliente.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NUEVA VERSION
+------------------------------------------------------------------------------------------------------------------------------------------
+
+# Blueprint Maestro: Sistema de Gestión de Correduría de Seguros (SGDO)
+**Desarrollado por:** Rodolfo Ramos
+**Propósito:** Sustitución de Excel por un ecosistema digital con flujos atómicos, versionamiento histórico y control de gestión.
+
+---
+
+## 1. Módulo de Configuración: Motor de Reglas (Checklists)
+*Define los requisitos mínimos para que un proceso sea válido.*
+
+1. **Checklist de Emisión/Renovación**: Configurado por Ramo y Persona (Cédula, RUC, Circulación, Póliza).
+2. **Checklist de Reclamos**: Configurado por tipo de siniestro (Boleta, Fotos, Facturas, Dictámenes).
+3. **Parámetros de Bloqueo**: El sistema no permite pasar de "Borrador" a "Proceso" si no se ha realizado el **Spliteo e Indexación** obligatorio de los documentos base.
+
+---
+
+## 2. Flujo Lineal Operativo (Workflows Atómicos)
+
+### A. Emisión Nueva y Renovación
+1. **Captura de Datos**: Datos técnicos + Cálculo de depreciación automático (para vehículos).
+2. **Paso Obligatorio - Digitalización**: Se abre el módulo de **Spliteo**. El usuario debe cargar el PDF y asignar las páginas al checklist (ej. Pág 1 = Póliza Nueva).
+3. **Formalización**: Solo tras indexar, el registro pasa a **Vigente**. En renovaciones, la versión anterior se mueve automáticamente al **Historial**.
+
+### B. Gestión de Reclamos (Siniestros con Seguimiento de Estados)
+*El reclamo no se cierra por tener los papeles, se cierra por resolución del caso.*
+
+1. **Apertura**: Se vincula a la póliza vigente (Búsqueda por Placa/RUC).
+2. **Spliteo de Evidencias (Lineal)**: Carga obligatoria de los documentos del siniestro según el checklist.
+3. **Estado: "En Espera de Resolución"**: Aunque el checklist esté al 100% ✅, el reclamo permanece **ABIERTO**.
+4. **Gestión de Seguimiento**: El sistema permite registrar notas de seguimiento (ej. "Enviado a taller", "Aseguradora analizando presupuesto").
+5. **Cierre Administrativo**: El gestor solo puede marcar como **CERRADO** cuando:
+   - Se carga el documento final (Finiquito o Comprobante de Pago).
+   - El cliente confirma la recepción del beneficio/reparación.
+
+---
+
+## 3. Motor de Búsqueda Transversal (Deep Search)
+*Búsqueda relacional para encontrar cualquier dato en segundos.*
+
+1. **Omnibox Global**: Búsqueda por Nombre, RUC, Placa, Chasis o Número de Póliza.
+2. **Vista 360° del Cliente**: 
+   - Línea de tiempo de pólizas (Versiones históricas).
+   - Historial de Reclamos (Digitalizados y con sus notas de seguimiento).
+   - Galería de Documentos permanentes (Cédula/RUC).
+
+---
+
+## 4. Módulo de Cobranza (Conciliación Inteligente)
+1. **Importación**: Se carga el Excel de morosos de la aseguradora.
+2. **Match Automático**: Cruce interno vs externo por número de póliza.
+3. **Actualización**: 
+   - **PAGADO**: Si desaparece del reporte de morosos.
+   - **MORA**: Si persiste, genera alerta roja y tarea en la bandeja de cobranza para llamar al cliente.
+
+---
+
+## 5. Gestión de Lotes Corporativos (Padre e Hijos)
+1. **Estructura**: Póliza Madre (Empresa) + Ítems (Vehículos/Empleados).
+2. **Herencia**: Los documentos de la empresa se aplican a todos los hijos automáticamente.
+3. **Spliteo en Cascada**: El gestor procesa el PDF masivo y asigna cada página al "Hijo" correspondiente de forma lineal antes de finalizar el lote.
+
+---
+
+## 6. Dashboard Gerencial (Semáforo de Gestión)
+* **Contador de Reclamos "En Espera"**: Siniestros abiertos que ya tienen documentos pero no solución.
+* **Alertas de Documentación**: Pólizas con archivos próximos a vencer.
+* **Indicador de Cobro**: Clientes que llevan más de 2 reportes apareciendo como morosos. 
