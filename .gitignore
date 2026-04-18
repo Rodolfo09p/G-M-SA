@@ -57,3 +57,6 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# Local Copilot instructions (do not commit)
+.github/copilot-instructions.md
