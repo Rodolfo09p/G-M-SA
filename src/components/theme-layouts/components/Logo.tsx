@@ -24,20 +24,20 @@ type LogoProps = {
 /**
  * The logo component.
  */
-function Logo(props: LogoProps) {
+function Logo(props: Readonly<LogoProps>) {
   const { className = "" } = props;
   return (
     <Root
       className={clsx(
-        "flex flex-shrink-0 flex-grow items-center gap-3",
+        "flex shrink-0 grow items-center gap-3",
         className,
       )}
     >
       <div className="flex flex-1 items-center gap-2">
         <img
-          className="logo-icon h-6 w-6"
+          className="logo-icon h-9 w-9 object-contain dark:brightness-0 dark:invert"
           src="/assets/images/logo/logo.svg"
-          alt="logo"
+          alt="G&M logo"
         />
         <div className="logo-text flex flex-auto flex-col gap-0.5">
           <Typography className="tracking-light text-lg leading-none font-semibold">
