@@ -7,7 +7,7 @@ import {
 
 export const dashboardMetricCards: DashboardMetricCardItem[] = [
   {
-    title: "Poliza por vencer (30)",
+    title: "Poliza por vencer (30 días)",
     value: "42",
     description: "Asegura renovaciones criticas",
     icon: "lucide:calendar-days",

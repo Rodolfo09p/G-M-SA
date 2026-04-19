@@ -20,6 +20,20 @@ const navigationConfig: FuseNavItemType[] = [
 		url: 'dashboard'
 	},
 	{
+		id: 'customers-component',
+		title: 'Clientes',
+		type: 'item',
+		icon: 'lucide:users',
+		url: 'customers'
+	},
+	{
+		id: 'policies-component',
+		title: 'Polizas',
+		type: 'item',
+		icon: 'lucide:file-text',
+		url: 'policies'
+	},
+	{
 		id: 'example-component',
 		title: 'Example',
 		translate: 'EXAMPLE',

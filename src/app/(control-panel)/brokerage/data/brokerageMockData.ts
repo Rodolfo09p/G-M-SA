@@ -1,0 +1,140 @@
+import {
+    CustomerEntity,
+    PolicyEntity,
+    PolicyFinanceEntity,
+} from "../types/brokerageTypes";
+
+export const customersMockData: CustomerEntity[] = [
+    {
+        id: "086-210760-0001M",
+        fullName: "Jorge Luis Martinez Jarquim",
+        personType: "natural",
+        phoneMobile: "8951-2159",
+        phoneLandline: "2258-1605 / 2252-4471",
+
+        address: "V/da Segura Gold",
+        birthMonth: "Julio",
+        nationality: "Nicaraguense",
+        resident: true,
+    },
+    {
+        id: "001-290796-0005N",
+        fullName: "Mixi 11.5L - Vida a Leon Enrique Cantarero",
+        personType: "natural",
+        phoneMobile: "8184-8155",
+        phoneLandline: "N/A",
+
+        address: "Managua",
+        birthMonth: "Julio",
+        nationality: "Nicaraguense",
+        resident: true,
+    },
+    {
+        id: "001-290796-0022N",
+        fullName: "Col. Centro America, Oficina 403",
+        personType: "legal",
+        phoneMobile: "8180-8599",
+        phoneLandline: "N/A",
+
+        address: "Colonia Centro America",
+        birthMonth: "N/A",
+        nationality: "Nicaraguense",
+        resident: false,
+    },
+];
+
+export const policiesMockData: PolicyEntity[] = [
+    {
+        policyNumber: "AU-189160-112275-0",
+        customerId: "086-210760-0001M",
+        branch: "Automovil",
+        insuranceCompany: "Lafise",
+        status: "active",
+        assignedTo: "G&M",
+        assignmentType: "gym",
+        startDate: "2026-07-10",
+        endDate: "2027-07-09",
+        insuredAssetDescription:
+            "Camioneta marca Toyota, modelo Hilux, color blanco, ano 2017, placa NS-29109, chasis MRFHZ8CD9JH101858.",
+    },
+    {
+        policyNumber: "SOA-9068571",
+        customerId: "086-210760-0001M",
+        branch: "SOAS",
+        insuranceCompany: "Iniser",
+        status: "active",
+        assignedTo: "G&M",
+        assignmentType: "gym",
+        startDate: "2026-04-03",
+        endDate: "2027-04-02",
+        insuredAssetDescription: "Moto particular para renovacion anual de SOAS.",
+    },
+    {
+        policyNumber: "RC01-3423212",
+        customerId: "001-290796-0022N",
+        branch: "Incendio Hogar",
+        insuranceCompany: "America",
+        status: "cancelled",
+        assignedTo: "Franklin",
+        assignmentType: "agent",
+        startDate: "2026-07-12",
+        endDate: "2026-07-12",
+        insuredAssetDescription:
+            "Incendio hogar, casa de habitacion, colonia Centro America, distrito 6, lote 16.",
+    },
+    {
+        policyNumber: "RCVE-1185",
+        customerId: "001-290796-0005N",
+        branch: "Vehiculos de Empresa",
+        insuranceCompany: "Iniser",
+        status: "active",
+        assignedTo: "Julio Diaz",
+        assignmentType: "agent",
+        startDate: "2026-04-08",
+        endDate: "2027-04-07",
+        insuredAssetDescription: "Vehiculo de uso corporativo para renovacion.",
+    },
+];
+
+export const policyFinancesMockData: PolicyFinanceEntity[] = [
+    {
+        policyNumber: "AU-189160-112275-0",
+        insuredSum: 17276,
+        netPremium: 691.06,
+        totalPremium: 679.3,
+        paymentMethod: "Banco",
+        currency: "NIO",
+        installments: 11,
+        installmentValue: 67.93,
+    },
+    {
+        policyNumber: "SOA-9068571",
+        insuredSum: 35000,
+        netPremium: 35,
+        totalPremium: 35,
+        paymentMethod: "Banco",
+        currency: "USD",
+        installments: 1,
+        installmentValue: 35,
+    },
+    {
+        policyNumber: "RC01-3423212",
+        insuredSum: 44444,
+        netPremium: 5367.5,
+        totalPremium: 5306.5,
+        paymentMethod: "Banco",
+        currency: "NIO",
+        installments: 26,
+        installmentValue: 122.56,
+    },
+    {
+        policyNumber: "RCVE-1185",
+        insuredSum: 12000,
+        netPremium: 12,
+        totalPremium: 12,
+        paymentMethod: "Banco",
+        currency: "USD",
+        installments: 1,
+        installmentValue: 12,
+    },
+];
