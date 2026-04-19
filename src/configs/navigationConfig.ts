@@ -13,6 +13,13 @@ i18n.addResourceBundle('ar', 'navigation', ar);
  */
 const navigationConfig: FuseNavItemType[] = [
 	{
+		id: 'dashboard-component',
+		title: 'Dashboard',
+		type: 'item',
+		icon: 'lucide:layout-dashboard',
+		url: 'dashboard'
+	},
+	{
 		id: 'example-component',
 		title: 'Example',
 		translate: 'EXAMPLE',

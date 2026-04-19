@@ -17,13 +17,11 @@ const routeConfigModules: Record<string, unknown> = import.meta.glob('/src/app/*
 
 const allConfigModules = { ...namedRouteConfigModules, ...routeConfigModules };
 
-const mainRoutes: FuseRouteConfigType[] = Object.keys(allConfigModules)
-	.map((modulePath) => {
-		const moduleConfigs = (allConfigModules[modulePath] as { default: FuseRouteConfigType | FuseRouteConfigType[] })
-			.default;
-		return Array.isArray(moduleConfigs) ? moduleConfigs : [moduleConfigs];
-	})
-	.flat();
+const mainRoutes: FuseRouteConfigType[] = Object.keys(allConfigModules).flatMap((modulePath) => {
+	const moduleConfigs = (allConfigModules[modulePath] as { default: FuseRouteConfigType | FuseRouteConfigType[] })
+		.default;
+	return Array.isArray(moduleConfigs) ? moduleConfigs : [moduleConfigs];
+});
 
 const routes: FuseRoutesType = [
 	{
@@ -34,7 +32,7 @@ const routes: FuseRoutesType = [
 		children: [
 			{
 				path: '/',
-				element: <Navigate to="/example" />
+				element: <Navigate to="/dashboard" />
 			},
 			...mainRoutes,
 			{
