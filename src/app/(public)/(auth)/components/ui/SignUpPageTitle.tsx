@@ -4,9 +4,9 @@ import Link from "@fuse/core/Link";
 function SignUpPageTitle() {
   return (
     <div className="w-full">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 mb-12">
         <img
-          className="w-24 h-auto"
+          className="w-24 h-auto ml-[-22px]"
           src="/assets/images/logo/logo.svg"
           alt="G&M Logo"
           style={{

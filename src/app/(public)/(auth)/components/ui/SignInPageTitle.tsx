@@ -4,9 +4,9 @@ import Link from "@fuse/core/Link";
 function SignInPageTitle() {
   return (
     <div className="w-full">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 mb-12">
         <img
-          className="w-24 h-auto"
+          className="w-24 h-auto ml-[-22px]"
           src="/assets/images/logo/logo.svg"
           alt="G&M Logo"
           style={{
@@ -24,11 +24,11 @@ function SignInPageTitle() {
         </div>
       </div>
 
-      <Typography className="mt-10 text-4xl leading-[1.25] font-extrabold tracking-tight">
+      <Typography className="text-4xl leading-[1.25] font-extrabold tracking-tight">
         Inici&aacute; Sesi&oacute;n
       </Typography>
 
-      <div className="mt-1 flex items-baseline font-medium">
+      <div className="mt-2 flex items-baseline font-medium">
         <Typography className="text-gray-500 text-sm">
           &iquest;No tienes una cuenta?
         </Typography>
