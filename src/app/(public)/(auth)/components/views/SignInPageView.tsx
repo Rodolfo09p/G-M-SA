@@ -48,7 +48,7 @@ function SignInPageView() {
         <div className="mx-auto flex w-full max-w-80 flex-col gap-8 sm:mx-0 sm:w-80">
           <SignInPageTitle />
           <div>
-            <Tabs
+            {/* <Tabs
               value={_.findIndex(tabs, { id: selectedTabId })}
               variant="fullWidth"
               className="mb-8 w-full"
@@ -82,11 +82,11 @@ function SignInPageView() {
                   label={item.title}
                 />
               ))}
-            </Tabs>
+            </Tabs> */}
 
             {selectedTabId === "jwt" && <JwtLoginTab />}
-            {selectedTabId === "firebase" && <FirebaseSignInTab />}
-            {selectedTabId === "aws" && <AwsSignInTab />}
+            {/* {selectedTabId === "firebase" && <FirebaseSignInTab />} */}
+            {/* {selectedTabId === "aws" && <AwsSignInTab />} */}
           </div>
         </div>
       </Paper>

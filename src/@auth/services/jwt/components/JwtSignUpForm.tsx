@@ -158,7 +158,7 @@ function JwtSignUpForm() {
 				render={({ field }) => (
 					<FormControl error={!!errors.acceptTermsConditions}>
 						<FormControlLabel
-							label="I agree with Terms and Privacy Policy"
+							label="Acepto los términos y condiciones"
 							control={
 								<Checkbox
 									size="small"
@@ -180,7 +180,7 @@ function JwtSignUpForm() {
 				type="submit"
 				size="large"
 			>
-				Create your free account
+				Crear Cuenta
 			</Button>
 		</form>
 	);
