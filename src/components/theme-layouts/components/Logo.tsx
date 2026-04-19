@@ -41,7 +41,7 @@ function Logo(props: Readonly<LogoProps>) {
         />
         <div className="logo-text flex flex-auto flex-col gap-0.5">
           <Typography className="tracking-light text-lg leading-none font-semibold">
-            G&M.SA
+            G&M S.A
           </Typography>
         </div>
       </div>
