@@ -22,6 +22,7 @@ type CustomDataGridProps<T extends GridValidRowModel> = {
   rightActions?: ReactNode;
   isLoading?: boolean;
   gridHeight?: number;
+  autoHeight?: boolean;
   initialState?: GridInitialState;
 };
 
@@ -37,11 +38,12 @@ export const CustomDataGrid = <T extends { id: string | number }>(
     rightActions,
     isLoading = false,
     gridHeight = 560,
+    autoHeight = true,
     initialState,
   } = props;
 
   return (
-    <Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
+    <Paper variant="outlined" sx={{ p: 2, borderRadius: 2}}>
       <Box
         sx={{
           display: "grid",
@@ -74,12 +76,13 @@ export const CustomDataGrid = <T extends { id: string | number }>(
         {rightActions && <Box>{rightActions}</Box>}
       </Box>
 
-      <Box sx={{ height: gridHeight, width: "100%" }}>
+      <Box sx={{ height: autoHeight ? "auto" : gridHeight, width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
+          autoHeight={autoHeight}
           loading={isLoading}
-          pageSizeOptions={[10, 25, 50]}
+          pageSizeOptions={[5, 10, 25, 50]}
           initialState={
             initialState ?? {
               pagination: {

@@ -98,14 +98,18 @@ export const CustomersView = () => {
         </Box>
       }
       content={
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3}}>
           <CustomDataGrid
             rows={filteredRows}
             columns={columns}
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
             searchPlaceholder="Buscar por nombre o cedula/RUC"
-            gridHeight={520}
+            initialState={{
+              pagination: {
+                paginationModel: { pageSize: 5, page: 0 },
+              },
+            }}
           />
         </Box>
       }

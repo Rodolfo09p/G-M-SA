@@ -212,7 +212,6 @@ export const PoliciesView = () => {
                 </Select>
               </FormControl>
             }
-            gridHeight={560}
             initialState={{
               pagination: {
                 paginationModel: { pageSize: 10, page: 0 },
