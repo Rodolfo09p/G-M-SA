@@ -97,6 +97,12 @@ export const CustomDataGrid = <T extends { id: string | number }>(
               backgroundColor: "rgba(0,0,0,0.02)",
               fontWeight: "bold",
             },
+            "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
+              outline: "none",
+            },
+            "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within": {
+              outline: "none",
+            },
           }}
         />
       </Box>
