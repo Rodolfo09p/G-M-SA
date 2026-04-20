@@ -1,15 +1,12 @@
 "use client";
 import { useMemo, useState } from "react";
 import FusePageSimple from "@fuse/core/FusePageSimple";
-import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import InputAdornment from "@mui/material/InputAdornment";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/material/styles";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
+import { CustomDataGrid } from "@/components";
 import { customersMockData, policiesMockData } from "../../../brokerage/data/brokerageMockData";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
@@ -102,39 +99,14 @@ export const CustomersView = () => {
       }
       content={
         <Box sx={{ p: 3 }}>
-          <Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
-            <TextField
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Buscar por nombre o cedula/RUC"
-              fullWidth
-              size="small"
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <FuseSvgIcon size={16}>lucide:search</FuseSvgIcon>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
-
-            <Box sx={{ mt: 2, height: 520 }}>
-              <DataGrid
-                rows={filteredRows}
-                columns={columns}
-                pageSizeOptions={[10, 25, 50]}
-                initialState={{
-                  pagination: {
-                    paginationModel: { pageSize: 10, page: 0 },
-                  },
-                }}
-                disableRowSelectionOnClick
-                sx={{ border: 0 }}
-              />
-            </Box>
-          </Paper>
+          <CustomDataGrid
+            rows={filteredRows}
+            columns={columns}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            searchPlaceholder="Buscar por nombre o cedula/RUC"
+            gridHeight={520}
+          />
         </Box>
       }
     />
