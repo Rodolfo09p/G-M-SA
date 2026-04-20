@@ -4,10 +4,8 @@ import FusePageSimple from "@fuse/core/FusePageSimple";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { GridColDef } from "@mui/x-data-grid";
@@ -136,23 +134,22 @@ export const PoliciesView = () => {
         minWidth: 220,
         flex: 1.4,
       },
-      { field: "status", headerName: "Estado", minWidth: 110, flex: 0.7 },
-      { field: "endDate", headerName: "Vence", minWidth: 110, flex: 0.7 },
+      { field: "status", headerName: "Estado", minWidth: 110, flex: 0.6 },
+      { field: "endDate", headerName: "Vence", minWidth: 110, flex: 0.6 },
       {
         field: "totalPremium",
         headerName: "Prima Total",
         minWidth: 140,
-        flex: 0.85,
-        align: "right",
-        headerAlign: "right",
+        flex: 0.6,
+
         valueFormatter: (_value, row) =>
           `${row.currency} ${row.totalPremium.toFixed(2)}`,
       },
       {
         field: "actions",
         headerName: "Acciones",
-        minWidth: 120,
-        flex: 0.7,
+        minWidth: 180,
+        flex: 0.5,
         sortable: false,
         filterable: false,
         disableColumnMenu: true,
@@ -174,11 +171,19 @@ export const PoliciesView = () => {
     [],
   );
 
-  const handleAssignmentFilterChange = (
-    event: SelectChangeEvent<"all" | AssignmentType>,
-  ) => {
-    setAssignmentFilter(event.target.value as "all" | AssignmentType);
-  };
+  const assignmentFilterOptions: Array<{
+    value: "all" | AssignmentType;
+    label: string;
+  }> = [
+    { value: "all", label: "Todas" },
+    { value: "gym", label: "G&M" },
+    { value: "agent", label: "Subagente" },
+  ];
+
+  const selectedAssignmentOption =
+    assignmentFilterOptions.find(
+      (option) => option.value === assignmentFilter,
+    ) ?? assignmentFilterOptions[0];
 
   return (
     <Root
@@ -196,28 +201,27 @@ export const PoliciesView = () => {
             columns={columns}
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
-            searchPlaceholder="Buscar por poliza, cliente o ramo"
+            searchPlaceholder="Buscar por póliza, cliente o ramo"
             rightActions={
-              <FormControl fullWidth size="small">
-                <InputLabel id="assignment-filter-label">Asignacion</InputLabel>
-                <Select
-                  labelId="assignment-filter-label"
-                  value={assignmentFilter}
-                  label="Asignacion"
-                  onChange={handleAssignmentFilterChange}
-                >
-                  <MenuItem value="all">Todas</MenuItem>
-                  <MenuItem value="gym">G&M</MenuItem>
-                  <MenuItem value="agent">Subagente</MenuItem>
-                </Select>
-              </FormControl>
+              <Autocomplete
+                options={assignmentFilterOptions}
+                getOptionLabel={(option) => option.label}
+                value={selectedAssignmentOption}
+                onChange={(_event, option) =>
+                  setAssignmentFilter(option?.value ?? "all")
+                }
+                disableClearable
+                size="medium"
+                sx={{ minWidth: 240 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Asignación" />
+                )}
+              />
             }
+            gridHeight={560}
             initialState={{
               pagination: {
-                paginationModel: { pageSize: 10, page: 0 },
-              },
-              sorting: {
-                sortModel: [{ field: "endDate", sort: "asc" }],
+                paginationModel: { pageSize: 5, page: 0 },
               },
             }}
           />

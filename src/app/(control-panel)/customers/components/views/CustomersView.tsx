@@ -93,7 +93,7 @@ export const CustomersView = () => {
             Clientes
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            CRM base del demo: busqueda por nombre o cedula/RUC.
+            Buscar por nombre o cédula/RUC.
           </Typography>
         </Box>
       }

@@ -608,7 +608,7 @@ export const defaultThemeOptions: DefaultThemeOptions = {
 			styleOverrides: {
 				root: {
 					height: 'auto!important',
-					minHeight: spacing(32),
+					minHeight: spacing(40),
 					'&.MuiInputBase-sizeSmall': {
 						minHeight: spacing(28)
 					}
@@ -617,13 +617,13 @@ export const defaultThemeOptions: DefaultThemeOptions = {
 					minHeight: spacing(28)
 				},
 				input: {
-					padding: `${spacing(6)} ${spacing(12)}` // 6px 12px
+					padding: `${spacing(8)} ${spacing(12)}` // 8px 12px
 				},
 				inputSizeSmall: {
 					padding: `${spacing(4)} ${spacing(12)}` // 4px 12px
 				},
 				multiline: {
-					padding: `${spacing(6)} ${spacing(12)}` // 6px 12px
+					padding: `${spacing(8)} ${spacing(12)}` // 8px 12px
 				},
 				adornedStart: {
 					paddingLeft: `${spacing(8)}`
@@ -642,10 +642,15 @@ export const defaultThemeOptions: DefaultThemeOptions = {
 		MuiFilledInput: {
 			styleOverrides: {
 				input: {
-					padding: `${spacing(4)} ${spacing(12)}` // 4px 12px
+					padding: `${spacing(8)} ${spacing(12)}` // 8px 12px
+				},
+				sizeSmall: {
+					'& .MuiFilledInput-input': {
+						padding: `${spacing(4)} ${spacing(12)}` // 4px 12px
+					}
 				},
 				multiline: {
-					padding: `${spacing(4)} ${spacing(12)}` // 4px 12px
+					padding: `${spacing(8)} ${spacing(12)}` // 8px 12px
 				},
 				adornedStart: {
 					paddingLeft: `${spacing(8)}`

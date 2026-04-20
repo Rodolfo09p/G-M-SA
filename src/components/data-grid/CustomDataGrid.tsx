@@ -61,7 +61,7 @@ export const CustomDataGrid = <T extends { id: string | number }>(
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder={searchPlaceholder}
           fullWidth
-          size="small"
+          size="medium"
           slotProps={{
             input: {
               startAdornment: (
