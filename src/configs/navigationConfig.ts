@@ -33,14 +33,7 @@ const navigationConfig: FuseNavItemType[] = [
 		icon: 'lucide:file-text',
 		url: 'policies'
 	},
-	{
-		id: 'example-component',
-		title: 'Example',
-		translate: 'EXAMPLE',
-		type: 'item',
-		icon: 'lucide:star',
-		url: 'example'
-	}
+
 ];
 
 export default navigationConfig;
