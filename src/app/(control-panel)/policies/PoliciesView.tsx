@@ -18,8 +18,8 @@ import {
   customersMockData,
   policiesMockData,
   policyFinancesMockData,
-} from "../../../brokerage/data/brokerageMockData";
-import { AssignmentType } from "../../../brokerage/types/brokerageTypes";
+} from "../brokerage/data/brokerageMockData";
+import { AssignmentType } from "../brokerage/types/brokerageTypes";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   "& .FusePageSimple-header": {

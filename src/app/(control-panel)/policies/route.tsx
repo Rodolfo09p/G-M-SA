@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import { FuseRouteItemType } from "@fuse/utils/FuseUtils";
 
-const PoliciesView = lazy(() => import("./components/views/PoliciesView"));
+const PoliciesView = lazy(() => import("./PoliciesView"));
 
 const route: FuseRouteItemType = {
   path: "policies",
