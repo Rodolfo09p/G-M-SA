@@ -1,7 +1,9 @@
+import { PolicyEntity, CustomerEntity, PolicyFinanceEntity } from "../../brokerage/types/brokerageTypes";
+
 export const mapPoliciesToRows = (
-  policies,
-  customers,
-  finances
+  policies: PolicyEntity[],
+  customers: CustomerEntity[],
+  finances: PolicyFinanceEntity[]
 ) => {
   return policies.map((policy) => {
     const customer = customers.find(

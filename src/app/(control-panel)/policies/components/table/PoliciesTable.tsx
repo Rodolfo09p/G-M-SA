@@ -1,7 +1,27 @@
+import { AssignmentType } from "@/app/(control-panel)/brokerage/types/brokerageTypes";
 import { CustomDataGrid } from "@/components";
 import { Autocomplete, TextField } from "@mui/material";
+import { PolicyTableRow } from "../../types/types";
+import { GridColDef } from "@mui/x-data-grid";
 
-export const PoliciesTable = (props) => {
+type AssignmentFilterValue = "all" | AssignmentType;
+
+type AssignmentOption = {
+  label: string;
+  value: AssignmentFilterValue;
+};
+
+type PoliciesTableProps = {
+  filteredRows: PolicyTableRow[];
+  columns: GridColDef<PolicyTableRow>[];
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  assignmentFilterOptions: AssignmentOption[];
+  selectedAssignmentOption: AssignmentOption;
+  setAssignmentFilter: (value: AssignmentFilterValue) => void;
+};
+
+export const PoliciesTable = (props: PoliciesTableProps) => {
   const {
     filteredRows,
     columns,

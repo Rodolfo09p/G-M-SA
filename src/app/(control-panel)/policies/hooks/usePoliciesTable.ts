@@ -9,7 +9,7 @@ export const usePoliciesTable = () => {
     const policyRows = mapPoliciesToRows(
         policiesMockData,
         customersMockData,
-        policyFinancesMockData,
+        policyFinancesMockData
     );
 
     const [searchTerm, setSearchTerm] = useState("");

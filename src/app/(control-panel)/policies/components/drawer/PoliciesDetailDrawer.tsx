@@ -7,6 +7,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { PolicyTableRow } from "../../types/types";
+
+
+type PoliciesDetailDrawerProps = {
+  selectedPolicy: PolicyTableRow | null;
+  setSelectedPolicy: (policy: PolicyTableRow | null) => void;
+};
 
 const DetailRow = ({ label, value }: { label: string; value: string }) => (
   <Box sx={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: 1 }}>
@@ -17,7 +24,7 @@ const DetailRow = ({ label, value }: { label: string; value: string }) => (
   </Box>
 );
 
-export const PoliciesDetailDrawer = (props) => {
+export const PoliciesDetailDrawer = (props: PoliciesDetailDrawerProps) => {
   const { selectedPolicy, setSelectedPolicy } = props;
 
   return (
