@@ -1,14 +1,18 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { PageLayout } from "@/components";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import { PoliciesTable } from "./components/table/PoliciesTable";
 import { PoliciesDetailDrawer } from "./components/drawer/PoliciesDetailDrawer";
 import { usePoliciesTable } from "./hooks/usePoliciesTable";
 import { getPoliciesColumns } from "./components/table/PoliciesColumns";
 import { assignmentFilterOptions } from "./constants/policiesFilter";
+import { NewManagementDialog } from "./components/dialogs/NewManagementDialog";
 
 export const PoliciesView = () => {
+  const [openNewManagement, setOpenNewManagement] = useState(false);
+
   const {
     assignmentFilter,
     searchTerm,
@@ -34,10 +38,26 @@ export const PoliciesView = () => {
   return (
     <PageLayout
       header={
-        <Box sx={{ p: 3 }}>
+        <Box
+          sx={{
+            p: 3,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Typography variant="h5" fontWeight={600}>
             Pólizas
           </Typography>
+
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setOpenNewManagement(true)}
+          >
+            <AddIcon sx={{ mr: 1 }} />
+            Nueva Gestión
+          </Button>
         </Box>
       }
       content={
@@ -54,6 +74,14 @@ export const PoliciesView = () => {
           <PoliciesDetailDrawer
             selectedPolicy={selectedPolicy}
             setSelectedPolicy={setSelectedPolicy}
+          />
+          <NewManagementDialog
+            open={openNewManagement}
+            onClose={() => setOpenNewManagement(false)}
+            onSelect={(flow) => {
+              console.log("FLOW:", flow);
+              setOpenNewManagement(false);
+            }}
           />
         </Box>
       }
