@@ -12,7 +12,10 @@ import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CloseIcon from "@mui/icons-material/Close";
 
-type ManagementFlow = "new_customer_policy" | "add_policy" | "renew_policy";
+export type ManagementFlow =
+  | "new_customer_policy"
+  | "add_policy"
+  | "renew_policy";
 
 type Props = {
   open: boolean;

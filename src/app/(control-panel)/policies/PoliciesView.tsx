@@ -8,10 +8,15 @@ import { PoliciesDetailDrawer } from "./components/drawer/PoliciesDetailDrawer";
 import { usePoliciesTable } from "./hooks/usePoliciesTable";
 import { getPoliciesColumns } from "./components/table/PoliciesColumns";
 import { assignmentFilterOptions } from "./constants/policiesFilter";
-import { NewManagementDialog } from "./components/dialogs/NewManagementDialog";
+import {
+  NewManagementDialog,
+  type ManagementFlow,
+} from "./components/dialogs/NewManagementDialog";
+import { NewPolicyWizardDialog } from "./components/dialogs/NewPolicyWizardDialog";
 
 export const PoliciesView = () => {
   const [openNewManagement, setOpenNewManagement] = useState(false);
+  const [openNewPolicyWizard, setOpenNewPolicyWizard] = useState(false);
 
   const {
     assignmentFilter,
@@ -35,6 +40,15 @@ export const PoliciesView = () => {
       ) ?? assignmentFilterOptions[0]
     );
   }, [assignmentFilter]);
+
+  const handleSelectManagementFlow = (flow: ManagementFlow) => {
+    if (flow === "new_customer_policy") {
+      setOpenNewPolicyWizard(true);
+    }
+
+    setOpenNewManagement(false);
+  };
+
   return (
     <PageLayout
       header={
@@ -78,9 +92,13 @@ export const PoliciesView = () => {
           <NewManagementDialog
             open={openNewManagement}
             onClose={() => setOpenNewManagement(false)}
-            onSelect={(flow) => {
-              console.log("FLOW:", flow);
-              setOpenNewManagement(false);
+            onSelect={handleSelectManagementFlow}
+          />
+          <NewPolicyWizardDialog
+            open={openNewPolicyWizard}
+            onClose={() => setOpenNewPolicyWizard(false)}
+            onSave={(_payload) => {
+              setOpenNewPolicyWizard(false);
             }}
           />
         </Box>

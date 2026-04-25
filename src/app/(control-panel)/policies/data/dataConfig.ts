@@ -1,263 +1,231 @@
-export type Ramo = "SOA" | "AUTOMOVIL";
-export type PersonaType = "NATURAL" | "JURIDICA";
+export type Ramo = 'SOA' | 'AUTOMOVIL';
+export type PersonaType = 'NATURAL' | 'JURIDICA';
 
-type DocumentItem = {
-  key: string;
-  label: string;
-  required: boolean;
-  type: "CLIENT" | "RISK" | "POLICY";
-  expirable?: boolean;
-  hasExpirationDate?: boolean;
-  order: number;
+export type Compania = 'LAFISE' | 'INISER' | 'AMERICA' | 'ASSURANT' | 'MAPFRE';
+export type AsignacionType = 'G&M' | 'AGENTE';
+
+export type DocumentItem = {
+	key: string;
+	label: string;
+	required: boolean;
+	type: 'CLIENT' | 'RISK' | 'POLICY';
+	hasExpirationDate?: boolean;
+	order: number;
 };
 
-type ChecklistConfig = {
-  [ramo in Ramo]: {
-    [persona in PersonaType]: DocumentItem[];
-  };
+export type ChecklistConfig = {
+	[ramo in Ramo]: Record<PersonaType, DocumentItem[]>;
 };
+
+export const companyOptions: Compania[] = ['LAFISE', 'INISER', 'AMERICA', 'ASSURANT', 'MAPFRE'];
+
+export const assignmentOptions: AsignacionType[] = ['G&M', 'AGENTE'];
 
 export const checklistConfig: ChecklistConfig = {
-  SOA: {
-    NATURAL: [
-      // CLIENTE
-      {
-        key: "cedula",
-        label: "Cédula de identidad",
-        required: true,
-        type: "CLIENT",
-        expirable: true,
-        hasExpirationDate: true,
-        order: 1,
-      },
-      {
-        key: "telefono",
-        label: "N° Telefónico",
-        required: true,
-        type: "CLIENT",
-        order: 2,
-      },
-      {
-        key: "direccion",
-        label: "Dirección de domicilio",
-        required: true,
-        type: "CLIENT",
-        order: 3,
-      },
-
-      // RIESGO
-      {
-        key: "circulacion",
-        label: "Circulación del vehículo",
-        required: true,
-        type: "RISK",
-        expirable: true,
-        hasExpirationDate: true,
-        order: 4,
-      },
-    ],
-
-    JURIDICA: [
-      // CLIENTE
-      {
-        key: "ruc",
-        label: "RUC de la empresa",
-        required: true,
-        type: "CLIENT",
-        order: 1,
-      },
-      {
-        key: "telefono",
-        label: "N° Telefónico",
-        required: true,
-        type: "CLIENT",
-        order: 2,
-      },
-      {
-        key: "direccion",
-        label: "Dirección de domicilio",
-        required: true,
-        type: "CLIENT",
-        order: 3,
-      },
-
-      // RIESGO
-      {
-        key: "circulacion",
-        label: "Circulación del vehículo",
-        required: true,
-        type: "RISK",
-        expirable: true,
-        hasExpirationDate: true,
-        order: 4,
-      },
-    ],
-  },
-
-  AUTOMOVIL: {
-    NATURAL: [
-      // CLIENTE
-      {
-        key: "cedula",
-        label: "Cédula de identidad",
-        required: true,
-        type: "CLIENT",
-        expirable: true,
-        hasExpirationDate: true,
-        order: 1,
-      },
-      {
-        key: "perfil_cliente",
-        label: "Perfil integral del cliente",
-        required: true,
-        type: "CLIENT",
-        order: 2,
-      },
-      {
-        key: "direccion",
-        label: "Dirección",
-        required: true,
-        type: "CLIENT",
-        order: 3,
-      },
-      {
-        key: "telefono",
-        label: "N° Telefónico",
-        required: true,
-        type: "CLIENT",
-        order: 4,
-      },
-
-      // RIESGO
-      {
-        key: "proforma_circulacion",
-        label: "Proforma o circulación",
-        required: true,
-        type: "RISK",
-        order: 5,
-      },
-
-      // POLIZA
-      {
-        key: "cotizacion",
-        label: "Cotización de póliza",
-        required: true,
-        type: "POLICY",
-        order: 6,
-      },
-      {
-        key: "solicitud",
-        label: "Solicitud de póliza",
-        required: true,
-        type: "POLICY",
-        order: 7,
-      },
-      {
-        key: "poliza_completa",
-        label: "Póliza completa",
-        required: true,
-        type: "POLICY",
-        order: 8,
-      },
-    ],
-
-    JURIDICA: [
-      // CLIENTE
-      {
-        key: "cedula_representante",
-        label: "Cédula del representante legal",
-        required: true,
-        type: "CLIENT",
-        order: 1,
-      },
-      {
-        key: "perfil_cliente",
-        label: "Perfil integral del cliente",
-        required: true,
-        type: "CLIENT",
-        order: 2,
-      },
-      {
-        key: "ruc",
-        label: "RUC",
-        required: true,
-        type: "CLIENT",
-        order: 3,
-      },
-      {
-        key: "beneficiario_final",
-        label: "Beneficiario final",
-        required: true,
-        type: "CLIENT",
-        order: 4,
-      },
-      {
-        key: "poder_representacion",
-        label: "Poder de representación",
-        required: true,
-        type: "CLIENT",
-        order: 5,
-      },
-      {
-        key: "acta_junta",
-        label: "Acta de junta directiva",
-        required: true,
-        type: "CLIENT",
-        order: 6,
-      },
-      {
-        key: "permiso_operaciones",
-        label: "Permiso de operaciones",
-        required: true,
-        type: "CLIENT",
-        order: 7,
-      },
-      {
-        key: "direccion",
-        label: "Dirección",
-        required: true,
-        type: "CLIENT",
-        order: 8,
-      },
-      {
-        key: "telefono",
-        label: "N° Telefónico",
-        required: true,
-        type: "CLIENT",
-        order: 9,
-      },
-
-      // RIESGO
-      {
-        key: "proforma_circulacion",
-        label: "Proforma o circulación",
-        required: true,
-        type: "RISK",
-        order: 10,
-      },
-
-      // POLIZA
-      {
-        key: "cotizacion",
-        label: "Cotización de póliza",
-        required: true,
-        type: "POLICY",
-        order: 11,
-      },
-      {
-        key: "solicitud",
-        label: "Solicitud de póliza",
-        required: true,
-        type: "POLICY",
-        order: 12,
-      },
-      {
-        key: "poliza_completa",
-        label: "Póliza completa",
-        required: true,
-        type: "POLICY",
-        order: 13,
-      },
-    ],
-  },
+	SOA: {
+		NATURAL: [
+			{
+				key: 'cedula_identidad',
+				label: 'Cedula de Identidad',
+				required: true,
+				type: 'CLIENT',
+				hasExpirationDate: true,
+				order: 1
+			},
+			{
+				key: 'circulacion_vehiculo',
+				label: 'Circulacion del Vehiculo',
+				required: true,
+				type: 'RISK',
+				hasExpirationDate: true,
+				order: 2
+			},
+			{
+				key: 'telefono_cliente',
+				label: 'N° Telefonico',
+				required: true,
+				type: 'CLIENT',
+				order: 3
+			},
+			{
+				key: 'direccion_domicilio',
+				label: 'Direccion de Domicilio',
+				required: true,
+				type: 'CLIENT',
+				order: 4
+			}
+		],
+		JURIDICA: [
+			{
+				key: 'cedula_ruc_empresa',
+				label: 'Cedula RUC de la Empresa',
+				required: true,
+				type: 'CLIENT',
+				order: 1
+			},
+			{
+				key: 'circulacion_vehiculo',
+				label: 'Circulacion del Vehiculo',
+				required: true,
+				type: 'RISK',
+				hasExpirationDate: true,
+				order: 2
+			},
+			{
+				key: 'telefono_cliente',
+				label: 'N° Telefonico',
+				required: true,
+				type: 'CLIENT',
+				order: 3
+			},
+			{
+				key: 'direccion_domicilio',
+				label: 'Direccion de Domicilio',
+				required: true,
+				type: 'CLIENT',
+				order: 4
+			}
+		]
+	},
+	AUTOMOVIL: {
+		NATURAL: [
+			{
+				key: 'cedula_identidad',
+				label: 'Cedula de Identidad',
+				required: true,
+				type: 'CLIENT',
+				hasExpirationDate: true,
+				order: 1
+			},
+			{
+				key: 'perfil_integral_cliente',
+				label: 'Perfil Integral del Cliente',
+				required: true,
+				type: 'CLIENT',
+				order: 2
+			},
+			{
+				key: 'proforma_circulacion',
+				label: 'Proforma o Circulacion',
+				required: true,
+				type: 'RISK',
+				order: 3
+			},
+			{
+				key: 'cotizacion_poliza',
+				label: 'Cotizacion de Poliza',
+				required: true,
+				type: 'POLICY',
+				order: 4
+			},
+			{
+				key: 'solicitud_poliza',
+				label: 'Solicitud de Poliza',
+				required: true,
+				type: 'POLICY',
+				order: 5
+			},
+			{
+				key: 'poliza_completa',
+				label: 'Poliza Completa',
+				required: true,
+				type: 'POLICY',
+				order: 6
+			},
+			{
+				key: 'direccion_cliente',
+				label: 'Direccion del Cliente',
+				required: true,
+				type: 'CLIENT',
+				order: 7
+			},
+			{
+				key: 'telefono_cliente',
+				label: 'N° Telefonico',
+				required: true,
+				type: 'CLIENT',
+				order: 8
+			}
+		],
+		JURIDICA: [
+			{
+				key: 'cedula_representante_legal',
+				label: 'Cedula de Representante Legal',
+				required: true,
+				type: 'CLIENT',
+				hasExpirationDate: true,
+				order: 1
+			},
+			{
+				key: 'perfil_integral_cliente',
+				label: 'Perfil Integral de Cliente',
+				required: true,
+				type: 'CLIENT',
+				order: 2
+			},
+			{
+				key: 'cedula_ruc',
+				label: 'Cedula RUC',
+				required: true,
+				type: 'CLIENT',
+				order: 3
+			},
+			{
+				key: 'beneficiario_final',
+				label: 'Beneficiario Final',
+				required: true,
+				type: 'CLIENT',
+				order: 4
+			},
+			{
+				key: 'poder_representacion',
+				label: 'Poder de Representacion',
+				required: true,
+				type: 'CLIENT',
+				order: 5
+			},
+			{
+				key: 'acta_junta_directiva',
+				label: 'Acta de Junta Directiva',
+				required: true,
+				type: 'CLIENT',
+				order: 6
+			},
+			{
+				key: 'permiso_operaciones',
+				label: 'Permiso de Operaciones',
+				required: true,
+				type: 'CLIENT',
+				order: 7
+			},
+			{
+				key: 'proforma_circulacion',
+				label: 'Proforma o Circulacion',
+				required: true,
+				type: 'RISK',
+				order: 8
+			},
+			{
+				key: 'poliza_completa',
+				label: 'Poliza Completa',
+				required: true,
+				type: 'POLICY',
+				order: 9
+			},
+			{
+				key: 'direccion_cliente',
+				label: 'Direccion',
+				required: true,
+				type: 'CLIENT',
+				order: 10
+			},
+			{
+				key: 'telefono_cliente',
+				label: 'N° de Telefono',
+				required: true,
+				type: 'CLIENT',
+				order: 11
+			}
+		]
+	}
 };
