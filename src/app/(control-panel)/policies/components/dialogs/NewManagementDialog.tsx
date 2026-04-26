@@ -93,7 +93,6 @@ export const NewManagementDialog = ({ open, onClose, onSelect }: Props) => {
                 <Typography fontWeight={600} fontSize={16}>
                   {option.title}
                 </Typography>
-
                 <Typography
                   variant="body2"
                   color="text.secondary"

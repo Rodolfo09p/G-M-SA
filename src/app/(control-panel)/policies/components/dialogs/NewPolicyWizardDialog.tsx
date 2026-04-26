@@ -863,7 +863,7 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
 	const isSummaryStep = steps[activeStep].key === 'summary';
 
 	return (
-		<Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+		<Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
 			<DialogTitle sx={{ pr: 6 }}>
 				<Stack direction="row" alignItems="center" spacing={1}>
 					<Typography variant="h5" fontWeight={800}>
