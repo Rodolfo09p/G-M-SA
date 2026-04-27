@@ -13,9 +13,7 @@ export type DocumentItem = {
 	order: number;
 };
 
-export type ChecklistConfig = {
-	[ramo in Ramo]: Record<PersonaType, DocumentItem[]>;
-};
+export type ChecklistConfig = Record<Ramo, Record<PersonaType, DocumentItem[]>>;
 
 export const companyOptions: Compania[] = ['LAFISE', 'INISER', 'AMERICA', 'ASSURANT', 'MAPFRE'];
 
@@ -39,20 +37,6 @@ export const checklistConfig: ChecklistConfig = {
 				type: 'RISK',
 				hasExpirationDate: true,
 				order: 2
-			},
-			{
-				key: 'telefono_cliente',
-				label: 'N° Telefonico',
-				required: true,
-				type: 'CLIENT',
-				order: 3
-			},
-			{
-				key: 'direccion_domicilio',
-				label: 'Direccion de Domicilio',
-				required: true,
-				type: 'CLIENT',
-				order: 4
 			}
 		],
 		JURIDICA: [
@@ -70,20 +54,6 @@ export const checklistConfig: ChecklistConfig = {
 				type: 'RISK',
 				hasExpirationDate: true,
 				order: 2
-			},
-			{
-				key: 'telefono_cliente',
-				label: 'N° Telefonico',
-				required: true,
-				type: 'CLIENT',
-				order: 3
-			},
-			{
-				key: 'direccion_domicilio',
-				label: 'Direccion de Domicilio',
-				required: true,
-				type: 'CLIENT',
-				order: 4
 			}
 		]
 	},
@@ -131,20 +101,6 @@ export const checklistConfig: ChecklistConfig = {
 				required: true,
 				type: 'POLICY',
 				order: 6
-			},
-			{
-				key: 'direccion_cliente',
-				label: 'Direccion del Cliente',
-				required: true,
-				type: 'CLIENT',
-				order: 7
-			},
-			{
-				key: 'telefono_cliente',
-				label: 'N° Telefonico',
-				required: true,
-				type: 'CLIENT',
-				order: 8
 			}
 		],
 		JURIDICA: [
@@ -211,20 +167,6 @@ export const checklistConfig: ChecklistConfig = {
 				required: true,
 				type: 'POLICY',
 				order: 9
-			},
-			{
-				key: 'direccion_cliente',
-				label: 'Direccion',
-				required: true,
-				type: 'CLIENT',
-				order: 10
-			},
-			{
-				key: 'telefono_cliente',
-				label: 'N° de Telefono',
-				required: true,
-				type: 'CLIENT',
-				order: 11
 			}
 		]
 	}

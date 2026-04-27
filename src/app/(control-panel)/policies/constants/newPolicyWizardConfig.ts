@@ -77,8 +77,6 @@ export const VEHICLE_BRANDS = Object.keys(VEHICLE_CATALOG);
 
 export const VEHICLE_YEARS = Array.from({ length: 30 }, (_, index) => `${new Date().getFullYear() - index}`);
 
-export const CHECKLIST_CATEGORY_OPTIONS = ['Cliente', 'Riesgo', 'Poliza'];
-
 export const CLIENT_FIELDS_BY_PERSON: Record<PersonaType, FormField[]> = {
 	NATURAL: [
 		{ key: 'fullName', label: 'Nombre completo', required: true },
@@ -129,7 +127,7 @@ export const BRANCH_FIELDS_BY_BRANCH: Record<Ramo, FormField[]> = {
 		{ key: 'vehicleModel', label: 'Modelo', required: true, kind: 'select' },
 		{
 			key: 'vehicleYear',
-			label: 'Anio',
+			label: 'Año del vehiculo',
 			required: true,
 			kind: 'select',
 			options: VEHICLE_YEARS

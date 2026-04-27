@@ -1,67 +1,65 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
-import type { FormField } from "../../../types/newPolicyWizard";
+import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import type { FormField } from '../../../types/newPolicyWizard';
 
 type Props = {
-  field: FormField;
-  value: string;
-  onChange: (next: string) => void;
-  optionsOverride?: string[];
+	field: FormField;
+	value: string;
+	onChange: (next: string) => void;
+	optionsOverride?: string[];
 };
 
-export const DynamicField = ({
-  field,
-  value,
-  onChange,
-  optionsOverride,
-}: Props) => {
-  const options = optionsOverride ?? field.options ?? [];
+export const DynamicField = ({ field, value, onChange, optionsOverride }: Props) => {
+	const options = optionsOverride ?? field.options ?? [];
 
-  if (field.kind === "select") {
-    return (
-      <FormControl fullWidth required={field.required}>
-        <InputLabel>{field.label}</InputLabel>
-        <Select
-          label={field.label}
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-        >
-          {options.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    );
-  }
+	if (field.kind === 'select') {
+		return (
+			<FormControl
+				fullWidth
+				required={field.required}
+				size="medium"
+			>
+				<InputLabel>{field.label}</InputLabel>
+				<Select
+					size="medium"
+					label={field.label}
+					value={value}
+					onChange={(event) => onChange(event.target.value)}
+				>
+					{options.map((option) => (
+						<MenuItem
+							key={option}
+							value={option}
+						>
+							{option}
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
+		);
+	}
 
-  let inputType: "text" | "date" | "number" = "text";
+	let inputType: 'text' | 'date' | 'number' = 'text';
 
-  if (field.kind === "date") {
-    inputType = "date";
-  }
+	if (field.kind === 'date') {
+		inputType = 'date';
+	}
 
-  if (field.kind === "number") {
-    inputType = "number";
-  }
+	if (field.kind === 'number') {
+		inputType = 'number';
+	}
 
-  return (
-    <TextField
-      fullWidth
-      label={field.label}
-      required={field.required}
-      type={inputType}
-      slotProps={{
-        inputLabel: field.kind === "date" ? { shrink: true } : undefined,
-      }}
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-    />
-  );
+	return (
+		<TextField
+			fullWidth
+			size="medium"
+			label={field.label}
+			required={field.required}
+			type={inputType}
+			slotProps={{
+				inputLabel: field.kind === 'date' ? { shrink: true } : undefined
+			}}
+			value={value}
+			onChange={(event) => onChange(event.target.value)}
+		/>
+	);
 };

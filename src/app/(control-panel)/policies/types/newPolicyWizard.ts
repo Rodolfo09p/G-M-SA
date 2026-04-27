@@ -14,7 +14,6 @@ export type FormField = {
 
 export type ChecklistEntry = {
 	delivered: boolean;
-	category: string;
 	hasExpiration: boolean;
 	expirationDate: string;
 };

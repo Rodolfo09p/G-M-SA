@@ -6,7 +6,7 @@ import {
 	VEHICLE_CATALOG,
 	WIZARD_STEPS
 } from '../constants/newPolicyWizardConfig';
-import { mapTypeToCategory, toMockFileName } from '../helpers/newPolicyWizard';
+import { toMockFileName } from '../helpers/newPolicyWizard';
 import type { ChecklistEntry, WizardPayload } from '../types/newPolicyWizard';
 
 type UseNewPolicyWizardArgs = {
@@ -108,8 +108,7 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 		return (
 			checklistState[item.key] ?? {
 				delivered: false,
-				category: mapTypeToCategory(item.type),
-				hasExpiration: false,
+				hasExpiration: Boolean(item.hasExpirationDate),
 				expirationDate: ''
 			}
 		);
@@ -117,19 +116,20 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 
 	const handleChecklistChange = (key: string, patch: Partial<ChecklistEntry>) => {
 		setChecklistState((prev) => {
-			const next = {
+			const item = checklistItems.find((checkItem) => checkItem.key === key);
+			const baseEntry: ChecklistEntry = prev[key] ?? {
+				delivered: false,
+				hasExpiration: Boolean(item?.hasExpirationDate),
+				expirationDate: ''
+			};
+
+			return {
 				...prev,
 				[key]: {
-					...prev[key],
+					...baseEntry,
 					...patch
 				}
 			};
-
-			if (!next[key].category) {
-				next[key].category = 'Cliente';
-			}
-
-			return next;
 		});
 	};
 
