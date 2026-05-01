@@ -14,6 +14,9 @@ type UseNewPolicyWizardArgs = {
 	onSave: (payload: WizardPayload) => void;
 };
 
+const PAYMENT_PLAN_KEYS = new Set(['paymentDueDate', 'totalPremium', 'netPremium', 'installments', 'installmentValue']);
+const CARD_PAYMENT_KEYS = new Set(['cardHolder', 'cardNumber', 'cardExpiry']);
+
 export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) => {
 	const [activeStep, setActiveStep] = useState(0);
 	const [personType, setPersonType] = useState<PersonaType | null>(null);
@@ -42,13 +45,30 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 		return CLIENT_FIELDS_BY_PERSON[personType];
 	}, [personType]);
 
-	const currentBranchFields = useMemo(() => {
+	const baseBranchFields = useMemo(() => {
 		if (!branch) {
 			return [];
 		}
 
 		return BRANCH_FIELDS_BY_BRANCH[branch];
 	}, [branch]);
+
+	const currentBranchFields = useMemo(() => {
+		const paymentType = branchData.paymentType;
+		const paymentMethod = branchData.paymentMethod;
+
+		return baseBranchFields.filter((field) => {
+			if (PAYMENT_PLAN_KEYS.has(field.key) && paymentType !== 'PLAZO') {
+				return false;
+			}
+
+			if (CARD_PAYMENT_KEYS.has(field.key) && paymentMethod !== 'DEBITO') {
+				return false;
+			}
+
+			return true;
+		});
+	}, [baseBranchFields, branchData.paymentMethod, branchData.paymentType]);
 
 	const modelOptions = useMemo(() => {
 		if (branch !== 'AUTOMOVIL') {
@@ -92,6 +112,20 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 
 			if (key === 'vehicleBrand') {
 				next.vehicleModel = '';
+			}
+
+			if (key === 'paymentType' && value !== 'PLAZO') {
+				next.paymentDueDate = '';
+				next.totalPremium = '';
+				next.netPremium = '';
+				next.installments = '';
+				next.installmentValue = '';
+			}
+
+			if (key === 'paymentMethod' && value !== 'DEBITO') {
+				next.cardHolder = '';
+				next.cardNumber = '';
+				next.cardExpiry = '';
 			}
 
 			return next;

@@ -1,65 +1,83 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import type { FormField } from '../../../types/newPolicyWizard';
+import React, { useMemo } from "react";
+import {
+  Autocomplete,
+  TextField,
+} from "@mui/material";
+import type { FormField } from "../../../types/newPolicyWizard";
 
 type Props = {
-	field: FormField;
-	value: string;
-	onChange: (next: string) => void;
-	optionsOverride?: string[];
+  field: FormField;
+  value: string;
+  onChange: (next: string) => void;
+  optionsOverride?: string[];
 };
 
-export const DynamicField = ({ field, value, onChange, optionsOverride }: Props) => {
-	const options = optionsOverride ?? field.options ?? [];
+export const DynamicField = React.memo(
+  ({ field, value, onChange, optionsOverride }: Props) => {
+    const options = useMemo(
+      () => optionsOverride ?? field.options ?? [],
+      [optionsOverride, field.options],
+    );
 
-	if (field.kind === 'select') {
-		return (
-			<FormControl
-				fullWidth
-				required={field.required}
-				size="medium"
-			>
-				<InputLabel>{field.label}</InputLabel>
-				<Select
-					size="medium"
-					label={field.label}
-					value={value}
-					onChange={(event) => onChange(event.target.value)}
-				>
-					{options.map((option) => (
-						<MenuItem
-							key={option}
-							value={option}
-						>
-							{option}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-		);
-	}
+    const resolvedOptions = useMemo(() => {
+      if (!value || options.includes(value)) {
+        return options;
+      }
 
-	let inputType: 'text' | 'date' | 'number' = 'text';
+      return [value, ...options];
+    }, [options, value]);
 
-	if (field.kind === 'date') {
-		inputType = 'date';
-	}
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(event.target.value);
+    };
 
-	if (field.kind === 'number') {
-		inputType = 'number';
-	}
+    const handleSelectChange = (
+      _event: React.SyntheticEvent,
+      nextValue: string | null,
+    ) => {
+      onChange(nextValue ?? "");
+    };
 
-	return (
-		<TextField
-			fullWidth
-			size="medium"
-			label={field.label}
-			required={field.required}
-			type={inputType}
-			slotProps={{
-				inputLabel: field.kind === 'date' ? { shrink: true } : undefined
-			}}
-			value={value}
-			onChange={(event) => onChange(event.target.value)}
-		/>
-	);
-};
+    if (field.kind === "select") {
+      return (
+        <Autocomplete
+          options={resolvedOptions}
+          value={value || null}
+          onChange={handleSelectChange}
+          disablePortal
+          openOnFocus
+          autoHighlight
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              size="medium"
+              label={field.label}
+              required={field.required}
+            />
+          )}
+        />
+      );
+    }
+
+    let inputType: "text" | "date" | "number" = "text";
+
+    if (field.kind === "date") inputType = "date";
+    if (field.kind === "number") inputType = "number";
+
+    return (
+      <TextField
+        fullWidth
+        size="medium"
+        label={field.label}
+        required={field.required}
+        type={inputType}
+        value={value}
+        onChange={handleChange}
+        slotProps={{
+          inputLabel: field.kind === "date" ? { shrink: true } : undefined,
+        }}
+      />
+    );
+  },
+);
