@@ -13,6 +13,7 @@ import {
   type ManagementFlow,
 } from "./components/dialogs/NewManagementDialog";
 import { NewPolicyWizardDialog } from "./components/dialogs/NewPolicyWizardDialog";
+import { addLocalPolicyFromWizard } from "./helpers/addLocalPolicyFromWizard";
 
 export const PoliciesView = () => {
   const [openNewManagement, setOpenNewManagement] = useState(false);
@@ -97,8 +98,15 @@ export const PoliciesView = () => {
           <NewPolicyWizardDialog
             open={openNewPolicyWizard}
             onClose={() => setOpenNewPolicyWizard(false)}
-            onSave={(_payload) => {
-              setOpenNewPolicyWizard(false);
+            onSave={(payload) => {
+              const result = addLocalPolicyFromWizard(payload);
+
+              if (result.ok) {
+                setOpenNewPolicyWizard(false);
+                return;
+              }
+
+              globalThis.alert(result.error);
             }}
           />
         </Box>

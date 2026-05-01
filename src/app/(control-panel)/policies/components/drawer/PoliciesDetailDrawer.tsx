@@ -15,6 +15,22 @@ type PoliciesDetailDrawerProps = {
   setSelectedPolicy: (policy: PolicyTableRow | null) => void;
 };
 
+const formatIsoDate = (value: string) => {
+  if (!value || value === "N/A") {
+    return "N/A";
+  }
+
+  const parts = value.split("-");
+
+  if (parts.length !== 3) {
+    return value;
+  }
+
+  const [year, month, day] = parts;
+
+  return `${day}/${month}/${year}`;
+};
+
 const DetailRow = ({ label, value }: { label: string; value: string }) => (
   <Box sx={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: 1 }}>
     <Typography variant="caption" color="text.secondary">
@@ -85,6 +101,20 @@ export const PoliciesDetailDrawer = (props: PoliciesDetailDrawerProps) => {
               label="Forma de pago"
               value={selectedPolicy.paymentMethod}
             />
+            <DetailRow
+              label="Tipo de pago"
+              value={selectedPolicy.paymentType}
+            />
+            <DetailRow
+              label="Fecha de pago"
+              value={formatIsoDate(selectedPolicy.paymentDueDate)}
+            />
+            {selectedPolicy.paymentMethod === "Debito" ? (
+              <DetailRow
+                label="Tarjeta"
+                value={selectedPolicy.debitCardMasked}
+              />
+            ) : null}
             <DetailRow
               label="Cuotas"
               value={`${selectedPolicy.installments}`}

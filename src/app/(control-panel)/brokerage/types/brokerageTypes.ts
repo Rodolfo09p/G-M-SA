@@ -32,8 +32,11 @@ export type PolicyFinanceEntity = {
   insuredSum: number;
   netPremium: number;
   totalPremium: number;
+  paymentType?: "CONTADO" | "PLAZO";
   paymentMethod: string;
-  currency: "USD" | "NIO";
+  paymentDueDate?: string;
+  debitCardMasked?: string;
+  currency: "USD";
   installments: number;
   installmentValue: number;
 };

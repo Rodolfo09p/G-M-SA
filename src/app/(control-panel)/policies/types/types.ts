@@ -13,7 +13,10 @@ export type PolicyTableRow = {
   endDate: string;
   insuredAssetDescription: string;
   customerId: string;
+  paymentType: string;
   paymentMethod: string;
+  paymentDueDate: string;
+  debitCardMasked: string;
   installments: number;
   installmentValue: number;
   netPremium: number;
