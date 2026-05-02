@@ -1,0 +1,9 @@
+export { default as SearchIcon } from "@mui/icons-material/Search";
+export { default as ExpandMoreIcon } from "@mui/icons-material/ExpandMore";
+export { default as EmailIcon } from "@mui/icons-material/Email";
+export { default as PhoneIcon } from "@mui/icons-material/Phone";
+export { default as FolderIcon } from "@mui/icons-material/Folder";
+export { default as FileIcon } from "@mui/icons-material/InsertDriveFile";
+export { default as ChevronRightIcon } from "@mui/icons-material/ChevronRight";
+export { default as InsertDriveFileOutlined } from "@mui/icons-material/InsertDriveFileOutlined";
+export { default as FolderOutlined } from "@mui/icons-material/FolderOutlined";

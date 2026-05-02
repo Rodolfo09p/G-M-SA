@@ -65,7 +65,7 @@ const navigationConfig: FuseNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:magnifying-glass',
 				// url: 'search/advanced'
-				url: ''
+				url: 'customer-profile'
 			}
 		]
 	},
