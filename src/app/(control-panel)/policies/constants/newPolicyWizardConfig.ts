@@ -108,28 +108,7 @@ export const CLIENT_FIELDS_BY_PERSON: Record<PersonaType, FormField[]> = {
 export const BRANCH_FIELDS_BY_BRANCH: Record<Ramo, FormField[]> = {
 	SOA: [
 		{ key: 'policyNumber', label: 'Numero de poliza', required: true },
-		{
-			key: 'paymentType',
-			label: 'Tipo de pago',
-			required: true,
-			kind: 'select',
-			options: paymentTypes
-		},
-		{
-			key: 'paymentMethod',
-			label: 'Metodo de pago',
-			required: true,
-			kind: 'select',
-			options: paymentMethods
-		},
-		{ key: 'cardHolder', label: 'Titular de la tarjeta', required: true, kind: 'text' },
-		{ key: 'cardNumber', label: 'Numero de tarjeta', required: true, kind: 'text' },
-		{ key: 'cardExpiry', label: 'Vencimiento de la tarjeta', required: true, kind: 'text' },
-		{ key: 'paymentDueDate', label: 'Fecha de pago', required: true, kind: 'date' },
 		{ key: 'totalPremium', label: 'Prima total', required: true, kind: 'number' },
-		{ key: 'netPremium', label: 'Prima neta', required: true, kind: 'number' },
-		{ key: 'installments', label: 'Cuotas', required: true, kind: 'number' },
-		{ key: 'installmentValue', label: 'Valor cuota', required: true, kind: 'number' },
 		{
 			key: 'startDate',
 			label: 'Inicio de vigencia',

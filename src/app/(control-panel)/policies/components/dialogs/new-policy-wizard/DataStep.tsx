@@ -193,10 +193,11 @@ export const DataStep = ({
 					>
 						{currentBranchFields.map((field) => {
 							const optionsOverride = field.key === 'vehicleModel' ? modelOptions : undefined;
+							const isLongDescriptionField = field.key === 'insuredVehicle';
 
 							return (
 								<Grid
-									size={{ xs: 12, md: 6 }}
+									size={{ xs: 12, md: isLongDescriptionField ? 12 : 6 }}
 									key={field.key}
 								>
 									<DynamicField

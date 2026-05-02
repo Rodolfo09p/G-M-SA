@@ -71,21 +71,35 @@ const buildPolicy = (payload: WizardPayload, customerId: string): PolicyEntity =
 
 const buildFinance = (payload: WizardPayload, policyNumber: string): PolicyFinanceEntity => {
   const { branch, branchData } = payload;
+  const isSOA = branch === "SOA";
+  const isPaymentPlan = branchData.paymentType === "PLAZO";
 
   const totalPremium = toNumber(branchData.totalPremium, 0);
-  const installments = Math.max(1, toNumber(branchData.installments, 1));
+  const installments = isSOA ? 1 : Math.max(1, toNumber(branchData.installments, 1));
   const fallbackInstallmentValue = totalPremium > 0 ? totalPremium / installments : 0;
+  const paymentType = isSOA || !isPaymentPlan ? "CONTADO" : "PLAZO";
+  let paymentMethod = "N/A";
+
+  if (!isSOA) {
+    paymentMethod = branchData.paymentMethod === "DEBITO" ? "Debito" : "Banco";
+  }
+
+  let paymentDueDate = "N/A";
+
+  if (!isSOA && isPaymentPlan) {
+    paymentDueDate = branchData.paymentDueDate ?? "N/A";
+  }
 
   return {
     policyNumber,
     insuredSum: branch === "AUTOMOVIL" ? toNumber(branchData.insuredAmount, 0) : 0,
     netPremium: toNumber(branchData.netPremium, totalPremium),
     totalPremium,
-    paymentType: branchData.paymentType === "PLAZO" ? "PLAZO" : "CONTADO",
-    paymentMethod: branchData.paymentMethod === "DEBITO" ? "Debito" : "Banco",
-    paymentDueDate: branchData.paymentType === "PLAZO" ? (branchData.paymentDueDate ?? "N/A") : "N/A",
+    paymentType,
+    paymentMethod,
+    paymentDueDate,
     debitCardMasked:
-      branchData.paymentMethod === "DEBITO"
+      !isSOA && branchData.paymentMethod === "DEBITO"
         ? toMaskedCard(branchData.cardNumber)
         : "N/A",
     currency: "USD",

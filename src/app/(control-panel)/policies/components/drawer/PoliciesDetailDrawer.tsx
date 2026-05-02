@@ -31,6 +31,14 @@ const formatIsoDate = (value: string) => {
   return `${day}/${month}/${year}`;
 };
 
+const formatMoneyOrNA = (currency: string, amount: number) => {
+  if (amount <= 0) {
+    return "N/A";
+  }
+
+  return `${currency} ${amount.toFixed(2)}`;
+};
+
 const DetailRow = ({ label, value }: { label: string; value: string }) => (
   <Box sx={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: 1 }}>
     <Typography variant="caption" color="text.secondary">
@@ -87,11 +95,11 @@ export const PoliciesDetailDrawer = (props: PoliciesDetailDrawerProps) => {
             <DetailRow label="Fin" value={selectedPolicy.endDate} />
             <DetailRow
               label="Suma asegurada"
-              value={`${selectedPolicy.currency} ${selectedPolicy.insuredSum.toFixed(2)}`}
+              value={formatMoneyOrNA(selectedPolicy.currency, selectedPolicy.insuredSum)}
             />
             <DetailRow
               label="Prima neta"
-              value={`${selectedPolicy.currency} ${selectedPolicy.netPremium.toFixed(2)}`}
+              value={formatMoneyOrNA(selectedPolicy.currency, selectedPolicy.netPremium)}
             />
             <DetailRow
               label="Prima total"

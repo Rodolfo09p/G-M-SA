@@ -58,6 +58,10 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 		const paymentMethod = branchData.paymentMethod;
 
 		return baseBranchFields.filter((field) => {
+			if (branch === 'SOA' && field.key === 'totalPremium') {
+				return true;
+			}
+
 			if (PAYMENT_PLAN_KEYS.has(field.key) && paymentType !== 'PLAZO') {
 				return false;
 			}
