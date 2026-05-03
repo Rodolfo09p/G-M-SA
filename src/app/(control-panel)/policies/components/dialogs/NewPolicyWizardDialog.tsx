@@ -120,7 +120,7 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
 		<Dialog
 			open={open}
 			onClose={handleClose}
-			maxWidth="md"
+			maxWidth="sm"
 			fullWidth
 		>
 			<DialogTitle sx={{ pr: 6 }}>
@@ -162,7 +162,7 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
 							color="text.secondary"
 							sx={{ mt: 1 }}
 						>
-							{WIZARD_STEPS[activeStep].title}: {WIZARD_STEPS[activeStep].description}
+							{WIZARD_STEPS[activeStep].description}
 						</Typography>
 					</Box>
 

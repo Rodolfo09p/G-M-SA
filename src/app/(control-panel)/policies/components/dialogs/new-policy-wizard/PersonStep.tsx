@@ -1,9 +1,10 @@
 import {
   Card,
-  CardActionArea,
   CardContent,
   Grid,
   Typography,
+  Box,
+  Button,
 } from "@mui/material";
 import type { PersonaType } from "../../../data/dataConfig";
 import { PERSON_CARDS } from "../../../constants/newPolicyWizardConfig";
@@ -15,24 +16,31 @@ type Props = {
 export const PersonStep = ({ onSelectPerson }: Props) => {
   return (
     <Grid container spacing={2}>
-      {PERSON_CARDS.map((option) => (
-        <Grid size={{ xs: 12, md: 6 }} key={option.value}>
-          <Card
-            variant="outlined"
-            sx={{
-              borderRadius: 3,
-              transition: "all .2s",
-              "&:hover": { boxShadow: 4 },
-            }}
-          >
-            <CardActionArea
-              onClick={() => onSelectPerson(option.value)}
-              sx={{ p: 1 }}
+      {PERSON_CARDS.map((option) => {
+        const Icon = option.icon;
+
+        return (
+          <Grid size={{ xs: 12, md: 6 }} key={option.value}>
+            <Card
+              variant="outlined"
+              sx={{
+                borderRadius: 3,
+                p: 2,
+                textAlign: "center",
+                borderColor: "divider",
+                boxShadow: 0,
+                transition: "all .2s",
+              }}
             >
               <CardContent>
-                <Typography variant="h6" fontWeight={800}>
+                <Box mb={2}>
+                  <Icon sx={{ fontSize: 48, color: "info.main" }} />
+                </Box>
+
+                <Typography variant="h6" fontWeight={700}>
                   {option.title}
                 </Typography>
+
                 <Typography
                   variant="body2"
                   color="text.secondary"
@@ -40,18 +48,27 @@ export const PersonStep = ({ onSelectPerson }: Props) => {
                 >
                   {option.description}
                 </Typography>
-                <Typography
-                  variant="caption"
-                  color="secondary.main"
-                  sx={{ mt: 1.5, display: "block" }}
+
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  fullWidth
+                  sx={{
+                    mt: 2,
+                    "&:hover": {
+                      backgroundColor: "info.main",
+                      color: "#fff",
+                    },
+                  }}
+                  onClick={() => onSelectPerson(option.value)}
                 >
-                  Click para continuar
-                </Typography>
+                  Continuar
+                </Button>
               </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-      ))}
+            </Card>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };
