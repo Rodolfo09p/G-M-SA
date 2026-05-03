@@ -8,18 +8,15 @@ import LightDarkModeToggle from 'src/components/LightDarkModeToggle';
 import useFuseLayoutSettings from '@fuse/core/FuseLayout/useFuseLayoutSettings';
 import AdjustFontSize from '../../components/AdjustFontSize';
 import FullScreenToggle from '../../components/FullScreenToggle';
-import LanguageSwitcher from '../../components/LanguageSwitcher';
-import NavigationShortcuts from '../../components/navigation/NavigationShortcuts';
-import NavigationSearch from '../../components/navigation/NavigationSearch';
 import QuickPanelToggleButton from '../../components/quickPanel/QuickPanelToggleButton';
 import { Layout1ConfigDefaultsType } from '@/components/theme-layouts/layout1/Layout1Config';
 import useThemeMediaQuery from '../../../../@fuse/hooks/useThemeMediaQuery';
 import { AppBar, Divider } from '@mui/material';
 import ToolbarTheme from 'src/contexts/ToolbarTheme';
 
-type ToolbarLayout1Props = {
+type ToolbarLayout1Props = Readonly<{
 	className?: string;
-};
+}>;
 
 /**
  * The toolbar layout 1.
@@ -55,7 +52,6 @@ function ToolbarLayout1(props: ToolbarLayout1Props) {
 							</>
 						)}
 
-						{/* {!isMobile && <NavigationShortcuts />} */}
 					</div>
 
 					<div className="flex items-center overflow-x-auto px-2 py-2 md:px-4">
@@ -66,8 +62,7 @@ function ToolbarLayout1(props: ToolbarLayout1Props) {
 							lightTheme={_.find(themeOptions, { id: 'Default' })}
 							darkTheme={_.find(themeOptions, { id: 'Default Dark' })}
 						/>
-						{/* <NavigationSearch /> */}
-						{/* <QuickPanelToggleButton /> */}
+						<QuickPanelToggleButton />
 					</div>
 
 					{config.navbar.display && config.navbar.position === 'right' && (

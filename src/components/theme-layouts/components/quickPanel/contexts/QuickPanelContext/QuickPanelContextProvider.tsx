@@ -1,20 +1,18 @@
-import { useState } from 'react';
-
-import { ReactNode } from 'react';
-import { QuickPanelContext, QuickPanelData } from './QuickPanelContext';
+import { useMemo, useState, type ReactNode } from 'react';
+import { QuickPanelContext, QuickPanelData, quickPanelDefaultData } from './QuickPanelContext';
 
 interface QuickPanelProviderProps {
 	children: ReactNode;
 }
 
 export const QuickPanelProvider: React.FC<QuickPanelProviderProps> = ({ children }) => {
-	const [data, setData] = useState<QuickPanelData>();
+	const [data, setData] = useState<QuickPanelData>(quickPanelDefaultData);
 	const [open, setOpen] = useState(false);
 
-	const removeEvents = () => {
+	const clearNotifications = () => {
 		setData((prevData) => ({
 			...prevData,
-			events: []
+			notifications: []
 		}));
 	};
 
@@ -30,14 +28,17 @@ export const QuickPanelProvider: React.FC<QuickPanelProviderProps> = ({ children
 		setOpen(false);
 	};
 
-	const value = {
-		data,
-		open,
-		removeEvents,
-		toggleQuickPanel,
-		openQuickPanel,
-		closeQuickPanel
-	};
+	const value = useMemo(
+		() => ({
+			data,
+			open,
+			clearNotifications,
+			toggleQuickPanel,
+			openQuickPanel,
+			closeQuickPanel
+		}),
+		[data, open]
+	);
 
 	return <QuickPanelContext.Provider value={value}>{children}</QuickPanelContext.Provider>;
 };
