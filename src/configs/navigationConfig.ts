@@ -97,14 +97,6 @@ const navigationConfig: FuseNavItemType[] = [
 				icon: 'heroicons-outline:banknotes',
 				url: ''
 			},
-			{
-				id: 'reports-renewals',
-				title: 'Próximas Renovaciones',
-				type: 'item',
-				icon: 'heroicons-outline:arrow-path',
-				// url: 'reports/renewals'
-				url: ''
-			}
 		]
 	},
 	{
