@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { PageLayout } from "@/components";
+import { PageLayout, useAppFeedback } from "@/components";
 import {
   Box,
   Typography,
@@ -20,9 +20,28 @@ import { DocumentsCard } from "./components/documents/DocumentsCard";
 const CustomerProfileView = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [customer, setCustomer] = useState<typeof MOCK_CUSTOMER | null>(null);
+  const { confirm, runWithFeedback, warning } = useAppFeedback();
 
-  const handleSearch = () => {
-    if (searchTerm.trim() !== "") setCustomer(MOCK_CUSTOMER);
+  const handleSearch = async () => {
+    if (searchTerm.trim() === "") {
+      warning("Ingresa una identificacion para buscar.");
+      return;
+    }
+
+    await runWithFeedback(
+      async () => {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 900);
+        });
+
+        setCustomer(MOCK_CUSTOMER);
+      },
+      {
+        loadingMessage: "Buscando cliente...",
+        successMessage: "Cliente cargado correctamente.",
+        errorMessage: "No se pudo completar la busqueda.",
+      },
+    );
   };
 
   const { openSections, toggle, toggleNested } = useFolders();

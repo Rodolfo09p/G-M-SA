@@ -18,6 +18,7 @@ import { NavbarContextProvider } from '@/components/theme-layouts/components/nav
 import { QuickPanelProvider } from '@/components/theme-layouts/components/quickPanel/contexts/QuickPanelContext/QuickPanelContextProvider';
 import RootThemeProvider from '@/contexts/RootThemeProvider';
 import { NavigationContextProvider } from '@/components/theme-layouts/components/navigation/contexts/NavigationContextProvider';
+import { AppFeedbackProvider } from '@/components';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -66,9 +67,11 @@ function App() {
 																	'bottom-0 right-0 mb-13 md:mb-17 mr-2 lg:mr-20 z-99'
 															}}
 														>
-															<QuickPanelProvider>
-																<FuseLayout layouts={themeLayouts} />
-															</QuickPanelProvider>
+																	<AppFeedbackProvider>
+																		<QuickPanelProvider>
+																			<FuseLayout layouts={themeLayouts} />
+																		</QuickPanelProvider>
+																	</AppFeedbackProvider>
 														</SnackbarProvider>
 													</FuseDialogContextProvider>
 												</NavigationContextProvider>
