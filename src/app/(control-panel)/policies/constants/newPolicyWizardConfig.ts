@@ -1,3 +1,5 @@
+import BusinessIcon from "@mui/icons-material/Business";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import type { PersonaType, Ramo } from '../data/dataConfig';
 import type { BranchCardOption, FormField, PersonCardOption, WizardStep } from '../types/newPolicyWizard';
 
@@ -26,15 +28,19 @@ export const WIZARD_STEPS: WizardStep[] = [
 
 export const PERSON_CARDS: PersonCardOption[] = [
 	{
-		value: 'NATURAL',
-		title: 'Cliente natural',
-		description: 'Persona individual con datos personales y documentos personales.'
+		value: "NATURAL",
+		title: "Cliente Natural",
+		description:
+			"Persona individual con datos personales y documentos personales.",
+		icon: PersonOutlineIcon,
 	},
 	{
-		value: 'JURIDICA',
-		title: 'Cliente juridica',
-		description: 'Empresa con representante legal, RUC y documentacion corporativa.'
-	}
+		value: "JURIDICA",
+		title: "Cliente Jurídica",
+		description:
+			"Empresa con representante legal, RUC y documentación corporativa.",
+		icon: BusinessIcon,
+	},
 ];
 
 export const BRANCH_CARDS: BranchCardOption[] = [

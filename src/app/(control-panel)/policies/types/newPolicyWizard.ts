@@ -39,6 +39,7 @@ export type PersonCardOption = {
 	value: PersonaType;
 	title: string;
 	description: string;
+	icon: React.ElementType;
 };
 
 export type BranchCardOption = {
