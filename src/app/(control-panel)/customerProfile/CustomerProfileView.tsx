@@ -20,7 +20,7 @@ import { DocumentsCard } from "./components/documents/DocumentsCard";
 const CustomerProfileView = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [customer, setCustomer] = useState<typeof MOCK_CUSTOMER | null>(null);
-  const { confirm, runWithFeedback, warning } = useAppFeedback();
+  const { runWithFeedback, warning } = useAppFeedback();
 
   const handleSearch = async () => {
     if (searchTerm.trim() === "") {
