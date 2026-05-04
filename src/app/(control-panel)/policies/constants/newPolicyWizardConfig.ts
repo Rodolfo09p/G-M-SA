@@ -52,7 +52,7 @@ export const BRANCH_CARDS: BranchCardOption[] = [
 	{
 		value: 'AUTOMOVIL',
 		title: 'Automovil',
-		description: 'Seguro de danos propios para vehiculo.'
+		description: 'Seguro de daños propios para vehiculo.'
 	}
 ];
 
