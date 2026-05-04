@@ -51,6 +51,15 @@ export const DataStep = ({
   onClientFieldChange,
   onBranchFieldChange,
 }: Props) => {
+  const wideFieldKeys = new Set(["address", "insuredVehicle"]);
+
+  const getGridSize = (fields: FormField[], index: number, fieldKey: string) => {
+    const isWideField = wideFieldKeys.has(fieldKey);
+    const isLastOddField = fields.length % 2 !== 0 && index === fields.length - 1;
+
+    return isWideField || isLastOddField ? 12 : 6;
+  };
+
   if (!personType) {
     return (
       <Alert severity="info">Primero selecciona el tipo de persona.</Alert>
@@ -137,8 +146,11 @@ export const DataStep = ({
         Datos del cliente
       </Typography>
       <Grid container spacing={2}>
-        {currentClientFields.map((field) => (
-          <Grid size={{ xs: 12, md: 6 }} key={field.key}>
+        {currentClientFields.map((field, index) => (
+          <Grid
+            size={{ xs: 12, md: getGridSize(currentClientFields, index, field.key) }}
+            key={field.key}
+          >
             <DynamicField
               field={field}
               value={clientData[field.key] ?? ""}
@@ -155,14 +167,16 @@ export const DataStep = ({
             Datos del ramo
           </Typography>
           <Grid container spacing={2}>
-            {currentBranchFields.map((field) => {
+            {currentBranchFields.map((field, index) => {
               const optionsOverride =
                 field.key === "vehicleModel" ? modelOptions : undefined;
-              const isLongDescriptionField = field.key === "insuredVehicle";
 
               return (
                 <Grid
-                  size={{ xs: 12, md: isLongDescriptionField ? 12 : 6 }}
+                  size={{
+                    xs: 12,
+                    md: getGridSize(currentBranchFields, index, field.key),
+                  }}
                   key={field.key}
                 >
                   <DynamicField

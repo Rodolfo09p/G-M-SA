@@ -61,7 +61,8 @@ export const DynamicField = React.memo(
     }
 
     let inputType: "text" | "date" | "number" = "text";
-    const isLongDescriptionField = field.key === "insuredVehicle";
+    const isMultilineField =
+      field.key === "insuredVehicle" || field.key === "address";
 
     if (field.kind === "date") inputType = "date";
     if (field.kind === "number") inputType = "number";
@@ -72,11 +73,11 @@ export const DynamicField = React.memo(
         size="medium"
         label={field.label}
         required={field.required}
-        type={isLongDescriptionField ? undefined : inputType}
+        type={isMultilineField ? undefined : inputType}
         value={value}
         onChange={handleChange}
-        multiline={isLongDescriptionField}
-        minRows={isLongDescriptionField ? 4 : undefined}
+        multiline={isMultilineField}
+        minRows={isMultilineField ? 3 : undefined}
         slotProps={{
           inputLabel: field.kind === "date" ? { shrink: true } : undefined,
         }}
