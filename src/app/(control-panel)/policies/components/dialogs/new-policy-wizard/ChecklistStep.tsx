@@ -54,11 +54,11 @@ export const ChecklistStep = ({
 			<TableContainer
 				component={Paper}
 				variant="outlined"
-				sx={{ borderRadius: 3 }}
+				sx={{ borderRadius: 1 }}
 			>
 				<Table
 					size="small"
-					sx={{ minWidth: 680 }}
+					sx={{ minWidth: 540 }}
 				>
 					<TableHead>
 						<TableRow>
