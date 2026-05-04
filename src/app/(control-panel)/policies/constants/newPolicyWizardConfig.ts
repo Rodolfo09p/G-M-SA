@@ -73,6 +73,8 @@ const months = [
 
 const paymentTypes = ['CONTADO', 'PLAZO'];
 const paymentMethods = ['BANCO', 'DEBITO'];
+const soaAssetTypes = ['MOTO', 'VEHICULO PARTICULAR', 'VEHICULO DE CARGA', 'BUS', 'MICROBUS', 'CAMIONETA'];
+const vehicleColors = ['BLANCO', 'NEGRO', 'GRIS', 'AZUL', 'ROJO', 'VERDE', 'PLATEADO', 'OTRO'];
 
 export const VEHICLE_CATALOG: Record<string, string[]> = {
 	Toyota: ['Hilux', 'Corolla', 'Yaris', 'RAV4'],
@@ -97,15 +99,17 @@ export const CLIENT_FIELDS_BY_PERSON: Record<PersonaType, FormField[]> = {
 			kind: 'select',
 			options: months
 		},
-		{ key: 'phone', label: 'Telefono', required: true },
+		{ key: 'phone', label: 'Celular', required: true },
+		{ key: 'phoneLandline', label: 'Convencional', required: false },
 		{ key: 'email', label: 'Correo electronico', required: false },
 		{ key: 'address', label: 'Direccion', required: true }
 	],
 	JURIDICA: [
-		{ key: 'businessName', label: 'Razon social', required: true },
+		{ key: 'insuredName', label: 'Nombre del asegurado', required: true },
 		{ key: 'ruc', label: 'RUC', required: true },
 		{ key: 'legalRepresentative', label: 'Representante legal', required: true },
-		{ key: 'phone', label: 'Telefono', required: true },
+		{ key: 'phone', label: 'Celular', required: true },
+		{ key: 'phoneLandline', label: 'Convencional', required: false },
 		{ key: 'email', label: 'Correo electronico', required: false },
 		{ key: 'address', label: 'Direccion', required: true }
 	]
@@ -114,6 +118,29 @@ export const CLIENT_FIELDS_BY_PERSON: Record<PersonaType, FormField[]> = {
 export const BRANCH_FIELDS_BY_BRANCH: Record<Ramo, FormField[]> = {
 	SOA: [
 		{ key: 'policyNumber', label: 'Numero de poliza', required: true },
+		{
+			key: 'assetType',
+			label: 'Tipo de bien',
+			required: true,
+			kind: 'select',
+			options: soaAssetTypes
+		},
+		{
+			key: 'vehicleBrand',
+			label: 'Marca',
+			required: true,
+			kind: 'select',
+			options: VEHICLE_BRANDS
+		},
+		{ key: 'vehiclePlate', label: 'Placa', required: true },
+		{ key: 'vehicleChassis', label: 'Chasis', required: true },
+		{
+			key: 'vehicleColor',
+			label: 'Color',
+			required: true,
+			kind: 'select',
+			options: vehicleColors
+		},
 		{ key: 'totalPremium', label: 'Prima total', required: true, kind: 'number' },
 		{
 			key: 'startDate',
@@ -121,8 +148,7 @@ export const BRANCH_FIELDS_BY_BRANCH: Record<Ramo, FormField[]> = {
 			required: true,
 			kind: 'date'
 		},
-		{ key: 'endDate', label: 'Fin de vigencia', required: true, kind: 'date' },
-		{ key: 'insuredVehicle', label: 'Descripcion del bien', required: true }
+		{ key: 'endDate', label: 'Fin de vigencia', required: true, kind: 'date' }
 	],
 	AUTOMOVIL: [
 		{ key: 'policyNumber', label: 'Numero de poliza', required: true },

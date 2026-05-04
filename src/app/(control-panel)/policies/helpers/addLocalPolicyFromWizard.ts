@@ -8,7 +8,7 @@ const toNumber = (value: string | undefined, fallback = 0) => {
 };
 
 const toMaskedCard = (rawCardNumber: string | undefined) => {
-  const digits = (rawCardNumber ?? "").replaceAll(/\D/g, "");
+  const digits = (rawCardNumber ?? "").replace(/\D/g, "");
 
   if (digits.length < 4) {
     return "N/A";
@@ -30,14 +30,16 @@ const buildCustomer = (payload: WizardPayload): CustomerEntity => {
   const isLegal = personType === "JURIDICA";
 
   const customerId = isLegal ? (clientData.ruc ?? "") : (clientData.idNumber ?? "");
-  const fullName = isLegal ? (clientData.businessName ?? "") : (clientData.fullName ?? "");
+  const fullName = isLegal
+    ? (clientData.insuredName ?? clientData.businessName ?? "")
+    : (clientData.fullName ?? "");
 
   return {
     id: customerId,
     fullName,
     personType: toPersonType(personType),
     phoneMobile: clientData.phone ?? "N/A",
-    phoneLandline: "N/A",
+    phoneLandline: clientData.phoneLandline ?? "N/A",
     address: clientData.address ?? "N/A",
     birthMonth: isLegal ? "N/A" : (clientData.birthMonth ?? "N/A"),
     nationality: "Nicaraguense",
@@ -50,10 +52,16 @@ const buildPolicy = (payload: WizardPayload, customerId: string): PolicyEntity =
 
   const policyNumber = branchData.policyNumber ?? `POL-${Date.now()}`;
   const isAutomovil = branch === "AUTOMOVIL";
+  const isSOA = branch === "SOA";
+  let insuredAssetDescription = branchData.insuredVehicle ?? "Riesgo no especificado";
 
-  const insuredAssetDescription = isAutomovil
-    ? `Vehiculo ${branchData.vehicleBrand ?? ""} ${branchData.vehicleModel ?? ""} ${branchData.vehicleYear ?? ""}, placa ${branchData.plate ?? ""}.`.trim()
-    : (branchData.insuredVehicle ?? "Riesgo no especificado");
+  if (isAutomovil) {
+    insuredAssetDescription = `Vehiculo ${branchData.vehicleBrand ?? ""} ${branchData.vehicleModel ?? ""} ${branchData.vehicleYear ?? ""}, placa ${branchData.plate ?? ""}.`.trim();
+  }
+
+  if (isSOA) {
+    insuredAssetDescription = `${branchData.assetType ?? "Vehiculo"} ${branchData.vehicleBrand ?? ""}, placa ${branchData.vehiclePlate ?? "N/A"}, chasis ${branchData.vehicleChassis ?? "N/A"}, color ${branchData.vehicleColor ?? "N/A"}.`.trim();
+  }
 
   return {
     policyNumber,
