@@ -1,6 +1,7 @@
 import { GridColDef } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 import { PolicyTableRow } from "../../types/types";
 
 const getStatusChipStyles = (statusCode: PolicyTableRow["statusCode"]) => {
@@ -37,6 +38,7 @@ const getStatusChipStyles = (statusCode: PolicyTableRow["statusCode"]) => {
 
 export const getPoliciesColumns = (
   onViewDetail: (row: PolicyTableRow) => void,
+  onCancelPolicy: (row: PolicyTableRow) => void,
 ): GridColDef<PolicyTableRow>[] => [
   {
     field: "policyNumber",
@@ -48,13 +50,13 @@ export const getPoliciesColumns = (
     field: "customerName",
     headerName: "Cliente",
     minWidth: 220,
-    flex: 1.4,
+    flex: 1.1,
   },
   {
     field: "status",
     headerName: "Estado",
     minWidth: 130,
-    flex: 0.6,
+    flex: 0.1,
     renderCell: (params) => {
       const statusStyles = getStatusChipStyles(params.row.statusCode);
 
@@ -88,23 +90,37 @@ export const getPoliciesColumns = (
   {
     field: "actions",
     headerName: "Acciones",
-    minWidth: 180,
-    flex: 0.5,
+    minWidth: 230,
+    flex: 0.7,
     sortable: false,
     filterable: false,
     disableColumnMenu: true,
     renderCell: (params) => (
-      <Button
-        size="small"
-        variant="text"
-        color="info"
-        onClick={(event) => {
-          event.stopPropagation();
-          onViewDetail(params.row);
-        }}
-      >
-        Ver detalle
-      </Button>
+      <Stack direction="row" spacing={0.5} alignItems="center">
+        <Button
+          size="small"
+          variant="text"
+          color="info"
+          onClick={(event) => {
+            event.stopPropagation();
+            onViewDetail(params.row);
+          }}
+        >
+          Ver detalle
+        </Button>
+        <Button
+          size="small"
+          variant="text"
+          color="error"
+          disabled={params.row.statusCode === "cancelled"}
+          onClick={(event) => {
+            event.stopPropagation();
+            onCancelPolicy(params.row);
+          }}
+        >
+          Anular
+        </Button>
+      </Stack>
     ),
   },
 ];

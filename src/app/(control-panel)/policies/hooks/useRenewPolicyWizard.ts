@@ -106,6 +106,59 @@ const parseAutomobileDataFromDescription = (description: string) => {
   };
 };
 
+const extractMarkerValue = (source: string, marker: string) => {
+  const lowerSource = source.toLowerCase();
+  const lowerMarker = marker.toLowerCase();
+  const markerIndex = lowerSource.indexOf(lowerMarker);
+
+  if (markerIndex < 0) {
+    return "";
+  }
+
+  const valueStart = markerIndex + lowerMarker.length;
+  const remaining = source.slice(valueStart).trim();
+  const commaIndex = remaining.indexOf(",");
+  const rawValue = commaIndex >= 0 ? remaining.slice(0, commaIndex) : remaining;
+
+  return rawValue.split(".").join("").trim();
+};
+
+const parseSOADataFromDescription = (description: string) => {
+  const source = description.trim();
+  const beforePlate = source.split(", placa")[0]?.trim() ?? "";
+  const prefixTokens = beforePlate.split(" ").filter(Boolean);
+
+  if (prefixTokens.length === 0) {
+    return {
+      assetType: "",
+      vehicleBrand: "",
+      vehiclePlate: extractMarkerValue(source, "placa "),
+      vehicleChassis: extractMarkerValue(source, "chasis "),
+      vehicleColor: extractMarkerValue(source, "color "),
+    };
+  }
+
+  if (prefixTokens.length === 1) {
+    return {
+      assetType: prefixTokens[0],
+      vehicleBrand: "",
+      vehiclePlate: extractMarkerValue(source, "placa "),
+      vehicleChassis: extractMarkerValue(source, "chasis "),
+      vehicleColor: extractMarkerValue(source, "color "),
+    };
+  }
+
+  const lastToken = prefixTokens.reduce((_, token) => token, "");
+
+  return {
+    assetType: prefixTokens.slice(0, -1).join(" "),
+    vehicleBrand: lastToken,
+    vehiclePlate: extractMarkerValue(source, "placa "),
+    vehicleChassis: extractMarkerValue(source, "chasis "),
+    vehicleColor: extractMarkerValue(source, "color "),
+  };
+};
+
 const mapCustomerToClientData = (
   customer: CustomerEntity,
   personType: PersonaType,
@@ -146,10 +199,17 @@ const mapFinanceToBranchData = (
   };
 
   if (branch === "SOA") {
+    const soaData = parseSOADataFromDescription(policy.insuredAssetDescription);
+
     return {
       ...base,
       policyNumber: "",
       totalPremium: `${finance?.totalPremium ?? 0}`,
+      assetType: soaData.assetType,
+      vehicleBrand: soaData.vehicleBrand,
+      vehiclePlate: soaData.vehiclePlate,
+      vehicleChassis: soaData.vehicleChassis,
+      vehicleColor: soaData.vehicleColor,
     };
   }
 

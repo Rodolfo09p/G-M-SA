@@ -64,7 +64,8 @@ export const policiesMockData: PolicyEntity[] = [
         assignmentType: "gym",
         startDate: "2026-04-03",
         endDate: "2027-04-02",
-        insuredAssetDescription: "Moto particular para renovacion anual de SOA.",
+        insuredAssetDescription:
+            "MOTO Yamaha, placa M349120, chasis CHA-SOA-7781, color ROJO.",
     },
     {
         policyNumber: "AU-2206-1900",

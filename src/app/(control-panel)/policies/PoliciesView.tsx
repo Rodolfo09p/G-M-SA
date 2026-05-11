@@ -17,6 +17,8 @@ import { AddPolicyToExistingCustomerWizardDialog } from "./components/dialogs/Ad
 import { addLocalPolicyFromWizard } from "./helpers/addLocalPolicyFromWizard";
 import { RenewPolicyWizardDialog } from "./components/dialogs/RenewPolicyWizardDialog";
 import { renewLocalPolicyFromWizard } from "./helpers/renewLocalPolicyFromWizard";
+import { cancelLocalPolicy } from "./helpers/cancelLocalPolicy";
+import type { PolicyTableRow } from "./types/types";
 
 const MIN_CREATE_POLICY_DELAY_MS = 2000;
 
@@ -30,7 +32,8 @@ export const PoliciesView = () => {
   const [openNewPolicyWizard, setOpenNewPolicyWizard] = useState(false);
   const [openAddPolicyWizard, setOpenAddPolicyWizard] = useState(false);
   const [openRenewPolicyWizard, setOpenRenewPolicyWizard] = useState(false);
-  const { showLoading, showAlert } = useAppFeedback();
+  const [dataVersion, setDataVersion] = useState(0);
+  const { showLoading, showAlert, showConfirm } = useAppFeedback();
 
   const {
     assignmentFilter,
@@ -45,8 +48,10 @@ export const PoliciesView = () => {
   } = usePoliciesTable();
 
   const columns = useMemo(
-    () => getPoliciesColumns(setSelectedPolicy),
-    [setSelectedPolicy],
+    () => getPoliciesColumns(setSelectedPolicy, (row) => {
+      void handleCancelPolicy(row);
+    }),
+    [setSelectedPolicy, dataVersion],
   );
 
   const selectedAssignmentOption = useMemo(() => {
@@ -105,6 +110,7 @@ export const PoliciesView = () => {
       });
       setOpenNewPolicyWizard(false);
       setOpenAddPolicyWizard(false);
+      setDataVersion((current) => current + 1);
     } finally {
       closeLoading();
     }
@@ -136,6 +142,48 @@ export const PoliciesView = () => {
         title: "Póliza renovada exitosamente",
       });
       setOpenRenewPolicyWizard(false);
+      setDataVersion((current) => current + 1);
+    } finally {
+      closeLoading();
+    }
+  };
+
+  const handleCancelPolicy = async (row: PolicyTableRow) => {
+    const confirmed = await showConfirm({
+      title: "¿Estás seguro de anular esta póliza?",
+      text: "Esta acción no se podrá revertir.",
+      confirmButtonText: "Sí, anular",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    const closeLoading = showLoading({
+      title: "Anulando póliza",
+      text: "Por favor, espere...",
+    });
+
+    try {
+      const result = cancelLocalPolicy(row.policyNumber);
+      await wait(MIN_CREATE_POLICY_DELAY_MS);
+
+      if (!result.ok) {
+        await showAlert({
+          icon: "error",
+          title: "No se pudo anular la póliza",
+          text: result.error,
+        });
+        return;
+      }
+
+      await showAlert({
+        icon: "success",
+        title: "Póliza anulada",
+      });
+      setSelectedPolicy(null);
+      setDataVersion((current) => current + 1);
     } finally {
       closeLoading();
     }
