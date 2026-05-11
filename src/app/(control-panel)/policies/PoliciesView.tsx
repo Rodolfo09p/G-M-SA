@@ -15,6 +15,8 @@ import {
 import { NewPolicyWizardDialog } from "./components/dialogs/NewPolicyWizardDialog";
 import { AddPolicyToExistingCustomerWizardDialog } from "./components/dialogs/AddPolicyToExistingCustomerWizardDialog";
 import { addLocalPolicyFromWizard } from "./helpers/addLocalPolicyFromWizard";
+import { RenewPolicyWizardDialog } from "./components/dialogs/RenewPolicyWizardDialog";
+import { renewLocalPolicyFromWizard } from "./helpers/renewLocalPolicyFromWizard";
 
 const MIN_CREATE_POLICY_DELAY_MS = 2000;
 
@@ -27,6 +29,7 @@ export const PoliciesView = () => {
   const [openNewManagement, setOpenNewManagement] = useState(false);
   const [openNewPolicyWizard, setOpenNewPolicyWizard] = useState(false);
   const [openAddPolicyWizard, setOpenAddPolicyWizard] = useState(false);
+  const [openRenewPolicyWizard, setOpenRenewPolicyWizard] = useState(false);
   const { showLoading, showAlert } = useAppFeedback();
 
   const {
@@ -61,6 +64,10 @@ export const PoliciesView = () => {
       setOpenAddPolicyWizard(true);
     }
 
+    if (flow === "renew_policy") {
+      setOpenRenewPolicyWizard(true);
+    }
+
     setOpenNewManagement(false);
   };
 
@@ -89,6 +96,37 @@ export const PoliciesView = () => {
       });
       setOpenNewPolicyWizard(false);
       setOpenAddPolicyWizard(false);
+    } finally {
+      closeLoading();
+    }
+  };
+
+  const handleRenewPolicy = async (
+    renewal: Parameters<typeof renewLocalPolicyFromWizard>[0],
+  ) => {
+    const closeLoading = showLoading({
+      title: "Renovando póliza",
+      text: "Por favor, espere...",
+    });
+
+    try {
+      const result = renewLocalPolicyFromWizard(renewal);
+      await wait(MIN_CREATE_POLICY_DELAY_MS);
+
+      if (!result.ok) {
+        await showAlert({
+          icon: "error",
+          title: "No se pudo renovar la póliza",
+          text: result.error,
+        });
+        throw new Error(result.error);
+      }
+
+      await showAlert({
+        icon: "success",
+        title: "Póliza renovada exitosamente",
+      });
+      setOpenRenewPolicyWizard(false);
     } finally {
       closeLoading();
     }
@@ -148,6 +186,11 @@ export const PoliciesView = () => {
             open={openAddPolicyWizard}
             onClose={() => setOpenAddPolicyWizard(false)}
             onSave={handleSavePolicy}
+          />
+          <RenewPolicyWizardDialog
+            open={openRenewPolicyWizard}
+            onClose={() => setOpenRenewPolicyWizard(false)}
+            onSave={handleRenewPolicy}
           />
         </Box>
       }

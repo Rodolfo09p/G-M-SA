@@ -19,7 +19,7 @@ export type PolicyEntity = {
   customerId: string;
   branch: string;
   insuranceCompany: string;
-  status: "active" | "cancelled";
+  status: "active" | "renewed" | "cancelled";
   assignedTo: string;
   assignmentType: AssignmentType;
   startDate: string;

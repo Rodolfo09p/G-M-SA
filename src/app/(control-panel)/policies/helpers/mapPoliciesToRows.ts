@@ -5,6 +5,12 @@ export const mapPoliciesToRows = (
   customers: CustomerEntity[],
   finances: PolicyFinanceEntity[]
 ) => {
+  const statusLabelMap: Record<PolicyEntity["status"], string> = {
+    active: "Activa",
+    renewed: "Renovada",
+    cancelled: "Anulada",
+  };
+
   return policies.map((policy) => {
     const customer = customers.find(
       (item) => item.id === policy.customerId
@@ -20,7 +26,7 @@ export const mapPoliciesToRows = (
       customerName: customer?.fullName ?? "Sin cliente",
       branch: policy.branch,
       insuranceCompany: policy.insuranceCompany,
-      status: policy.status === "active" ? "Activa" : "Anulada",
+      status: statusLabelMap[policy.status],
       assignedTo: policy.assignedTo,
       assignmentType: policy.assignmentType,
       startDate: policy.startDate,

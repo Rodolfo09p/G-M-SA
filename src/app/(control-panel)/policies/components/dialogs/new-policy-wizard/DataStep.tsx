@@ -33,6 +33,7 @@ type Props = {
   onClientFieldChange: (key: string, value: string) => void;
   onBranchFieldChange: (key: string, value: string) => void;
   showClientFields?: boolean;
+  showBranchSelector?: boolean;
   existingCustomerSummary?: {
     id: string;
     fullName: string;
@@ -55,6 +56,7 @@ export const DataStep = ({
   onClientFieldChange,
   onBranchFieldChange,
   showClientFields = true,
+  showBranchSelector = true,
   existingCustomerSummary,
 }: Props) => {
   const wideFieldKeys = new Set(["address", "insuredVehicle"]);
@@ -113,42 +115,51 @@ export const DataStep = ({
         </Alert>
       ) : null}
 
-      <Autocomplete
-        size="medium"
-        fullWidth
-        disablePortal
-        options={BRANCH_CARDS}
-        openOnFocus
-        autoHighlight
-        value={BRANCH_CARDS.find((option) => option.value === branch) ?? null}
-        onChange={(_, value) => {
-          if (value) {
-            setBranch(value.value);
-          }
-        }}
-        getOptionLabel={(option) => option.title}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
-        renderOption={(props, option) => (
-          <li {...props}>
-            <Stack spacing={0.2}>
-              <Typography variant="body1" fontWeight={600}>
-                {option.title}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {option.description}
-              </Typography>
-            </Stack>
-          </li>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Ramo"
-            required
-            helperText="Ej: SOA, Automovil, Incendio, Miscelanea"
-          />
-        )}
-      />
+      {showBranchSelector ? (
+        <Autocomplete
+          size="medium"
+          fullWidth
+          disablePortal
+          options={BRANCH_CARDS}
+          openOnFocus
+          autoHighlight
+          value={BRANCH_CARDS.find((option) => option.value === branch) ?? null}
+          onChange={(_, value) => {
+            if (value) {
+              setBranch(value.value);
+            }
+          }}
+          getOptionLabel={(option) => option.title}
+          isOptionEqualToValue={(option, value) => option.value === value.value}
+          renderOption={(props, option) => (
+            <li {...props}>
+              <Stack spacing={0.2}>
+                <Typography variant="body1" fontWeight={600}>
+                  {option.title}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {option.description}
+                </Typography>
+              </Stack>
+            </li>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Ramo"
+              required
+              helperText="Ej: SOA, Automóvil, Incendio, Miscelánea"
+            />
+          )}
+        />
+      ) : (
+        <TextField
+          fullWidth
+          label="Ramo"
+          value={branch ?? ""}
+          disabled
+        />
+      )}
 
       <Divider />
 
