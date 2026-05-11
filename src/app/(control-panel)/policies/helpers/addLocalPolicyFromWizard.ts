@@ -68,7 +68,7 @@ const buildPolicy = (payload: WizardPayload, customerId: string): PolicyEntity =
     customerId,
     branch: isAutomovil ? "Automovil" : "SOA",
     insuranceCompany: company,
-    status: "active",
+    status: "new",
     assignedTo: assignment,
     assignmentType: toAssignmentType(assignment),
     startDate: branchData.startDate ?? "",

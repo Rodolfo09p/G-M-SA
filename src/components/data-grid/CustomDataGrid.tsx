@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { SxProps, Theme } from "@mui/material/styles";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -24,6 +25,8 @@ type CustomDataGridProps<T extends GridValidRowModel> = {
   gridHeight?: number;
   autoHeight?: boolean;
   initialState?: GridInitialState;
+  searchFieldWidth?: string | number;
+  searchFieldSx?: SxProps<Theme>;
 };
 
 export const CustomDataGrid = <T extends { id: string | number }>(
@@ -40,6 +43,8 @@ export const CustomDataGrid = <T extends { id: string | number }>(
     gridHeight = 560,
     autoHeight = true,
     initialState,
+    searchFieldWidth,
+    searchFieldSx,
   } = props;
 
   return (
@@ -50,7 +55,7 @@ export const CustomDataGrid = <T extends { id: string | number }>(
           gap: 2,
           gridTemplateColumns: {
             xs: "1fr",
-            md: rightActions ? "minmax(0, 2fr) minmax(0, 1fr)" : "1fr",
+            md: rightActions ? "minmax(0, 1fr) auto" : "1fr",
           },
           alignItems: "center",
           mb: 2,
@@ -60,8 +65,9 @@ export const CustomDataGrid = <T extends { id: string | number }>(
           value={searchTerm}
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder={searchPlaceholder}
-          fullWidth
+          fullWidth={!searchFieldWidth}
           size="medium"
+          sx={{ width: searchFieldWidth, ...searchFieldSx }}
           slotProps={{
             input: {
               startAdornment: (
@@ -73,7 +79,11 @@ export const CustomDataGrid = <T extends { id: string | number }>(
           }}
         />
 
-        {rightActions && <Box>{rightActions}</Box>}
+        {rightActions && (
+          <Box sx={{ justifySelf: "end", width: "fit-content", maxWidth: "100%" }}>
+            {rightActions}
+          </Box>
+        )}
       </Box>
 
       <Box sx={{ height: autoHeight ? "auto" : gridHeight, width: "100%" }}>

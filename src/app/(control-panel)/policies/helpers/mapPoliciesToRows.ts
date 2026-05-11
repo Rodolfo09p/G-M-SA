@@ -6,6 +6,7 @@ export const mapPoliciesToRows = (
   finances: PolicyFinanceEntity[]
 ) => {
   const statusLabelMap: Record<PolicyEntity["status"], string> = {
+    new: "Nueva",
     active: "Activa",
     renewed: "Renovada",
     cancelled: "Anulada",
@@ -26,6 +27,7 @@ export const mapPoliciesToRows = (
       customerName: customer?.fullName ?? "Sin cliente",
       branch: policy.branch,
       insuranceCompany: policy.insuranceCompany,
+      statusCode: policy.status,
       status: statusLabelMap[policy.status],
       assignedTo: policy.assignedTo,
       assignmentType: policy.assignmentType,

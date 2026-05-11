@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { mapPoliciesToRows } from "../helpers/mapPoliciesToRows";
 import { PolicyTableRow } from "../types/types";
-import { AssignmentType } from "../../brokerage/types/brokerageTypes";
+import { AssignmentType, PolicyEntity } from "../../brokerage/types/brokerageTypes";
 import { customersMockData, policiesMockData, policyFinancesMockData } from "../../brokerage/data/brokerageMockData";
 
 export const usePoliciesTable = () => {
@@ -15,6 +15,9 @@ export const usePoliciesTable = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [assignmentFilter, setAssignmentFilter] = useState<
         "all" | AssignmentType
+    >("all");
+    const [statusFilter, setStatusFilter] = useState<
+        "all" | PolicyEntity["status"]
     >("all");
     const [selectedPolicy, setSelectedPolicy] = useState<PolicyTableRow | null>(
         null,
@@ -33,9 +36,22 @@ export const usePoliciesTable = () => {
             const matchesAssignment =
                 assignmentFilter === "all" || row.assignmentType === assignmentFilter;
 
-            return matchesSearch && matchesAssignment;
-        });
-    }, [policyRows, searchTerm, assignmentFilter]);
+            const matchesStatus =
+                statusFilter === "all" || row.statusCode === statusFilter;
 
-    return { searchTerm, setSearchTerm, assignmentFilter, setAssignmentFilter, selectedPolicy, setSelectedPolicy, filteredRows };
+            return matchesSearch && matchesAssignment && matchesStatus;
+        });
+    }, [policyRows, searchTerm, assignmentFilter, statusFilter]);
+
+    return {
+        searchTerm,
+        setSearchTerm,
+        assignmentFilter,
+        setAssignmentFilter,
+        statusFilter,
+        setStatusFilter,
+        selectedPolicy,
+        setSelectedPolicy,
+        filteredRows,
+    };
 }

@@ -1,4 +1,5 @@
 import { AssignmentType } from "../../brokerage/types/brokerageTypes";
+import type { PolicyEntity } from "../../brokerage/types/brokerageTypes";
 
 export type PolicyTableRow = {
   id: string;
@@ -6,6 +7,7 @@ export type PolicyTableRow = {
   customerName: string;
   branch: string;
   insuranceCompany: string;
+  statusCode: PolicyEntity["status"];
   status: string;
   assignedTo: string;
   assignmentType: AssignmentType;

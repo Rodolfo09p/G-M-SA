@@ -7,7 +7,7 @@ import { PoliciesTable } from "./components/table/PoliciesTable";
 import { PoliciesDetailDrawer } from "./components/drawer/PoliciesDetailDrawer";
 import { usePoliciesTable } from "./hooks/usePoliciesTable";
 import { getPoliciesColumns } from "./components/table/PoliciesColumns";
-import { assignmentFilterOptions } from "./constants/policiesFilter";
+import { assignmentFilterOptions, statusFilterOptions } from "./constants/policiesFilter";
 import {
   NewManagementDialog,
   type ManagementFlow,
@@ -34,10 +34,12 @@ export const PoliciesView = () => {
 
   const {
     assignmentFilter,
+    statusFilter,
     searchTerm,
     selectedPolicy,
     setSelectedPolicy,
     setAssignmentFilter,
+    setStatusFilter,
     setSearchTerm,
     filteredRows,
   } = usePoliciesTable();
@@ -54,6 +56,13 @@ export const PoliciesView = () => {
       ) ?? assignmentFilterOptions[0]
     );
   }, [assignmentFilter]);
+
+  const selectedStatusOption = useMemo(() => {
+    return (
+      statusFilterOptions.find((option) => option.value === statusFilter) ??
+      statusFilterOptions[0]
+    );
+  }, [statusFilter]);
 
   const handleSelectManagementFlow = (flow: ManagementFlow) => {
     if (flow === "new_customer_policy") {
@@ -167,6 +176,9 @@ export const PoliciesView = () => {
             assignmentFilterOptions={assignmentFilterOptions}
             selectedAssignmentOption={selectedAssignmentOption}
             setAssignmentFilter={setAssignmentFilter}
+            statusFilterOptions={statusFilterOptions}
+            selectedStatusOption={selectedStatusOption}
+            setStatusFilter={setStatusFilter}
           />
           <PoliciesDetailDrawer
             selectedPolicy={selectedPolicy}
