@@ -13,6 +13,7 @@ import {
   type ManagementFlow,
 } from "./components/dialogs/NewManagementDialog";
 import { NewPolicyWizardDialog } from "./components/dialogs/NewPolicyWizardDialog";
+import { AddPolicyToExistingCustomerWizardDialog } from "./components/dialogs/AddPolicyToExistingCustomerWizardDialog";
 import { addLocalPolicyFromWizard } from "./helpers/addLocalPolicyFromWizard";
 
 const MIN_CREATE_POLICY_DELAY_MS = 2000;
@@ -25,6 +26,7 @@ const wait = (ms: number) =>
 export const PoliciesView = () => {
   const [openNewManagement, setOpenNewManagement] = useState(false);
   const [openNewPolicyWizard, setOpenNewPolicyWizard] = useState(false);
+  const [openAddPolicyWizard, setOpenAddPolicyWizard] = useState(false);
   const { showLoading, showAlert } = useAppFeedback();
 
   const {
@@ -55,14 +57,41 @@ export const PoliciesView = () => {
       setOpenNewPolicyWizard(true);
     }
 
+    if (flow === "add_policy") {
+      setOpenAddPolicyWizard(true);
+    }
+
     setOpenNewManagement(false);
   };
 
-  const handleShow = async () => {
-    await showAlert({
-      icon: "success",
-      title: "Funciona el show",
+  const handleSavePolicy = async (payload: Parameters<typeof addLocalPolicyFromWizard>[0]) => {
+    const closeLoading = showLoading({
+      title: "Creando póliza",
+      text: "Por favor, espere...",
     });
+
+    try {
+      const result = addLocalPolicyFromWizard(payload);
+      await wait(MIN_CREATE_POLICY_DELAY_MS);
+
+      if (!result.ok) {
+        await showAlert({
+          icon: "error",
+          title: "No se pudo crear la póliza",
+          text: result.error,
+        });
+        throw new Error(result.error);
+      }
+
+      await showAlert({
+        icon: "success",
+        title: "Póliza creada exitosamente",
+      });
+      setOpenNewPolicyWizard(false);
+      setOpenAddPolicyWizard(false);
+    } finally {
+      closeLoading();
+    }
   };
 
   return (
@@ -76,9 +105,6 @@ export const PoliciesView = () => {
             alignItems: "center",
           }}
         >
-          <Button variant="outlined" onClick={handleShow}>
-            TEST
-          </Button>
           <Typography variant="h5" fontWeight={600}>
             Pólizas
           </Typography>
@@ -116,34 +142,12 @@ export const PoliciesView = () => {
           <NewPolicyWizardDialog
             open={openNewPolicyWizard}
             onClose={() => setOpenNewPolicyWizard(false)}
-            onSave={async (payload) => {
-              const closeLoading = showLoading({
-                title: "Creando póliza",
-                text: "Por favor, espere...",
-              });
-
-              try {
-                const result = addLocalPolicyFromWizard(payload);
-                await wait(MIN_CREATE_POLICY_DELAY_MS);
-
-                if (!result.ok) {
-                  await showAlert({
-                    icon: "error",
-                    title: "No se pudo crear la póliza",
-                    text: result.error,
-                  });
-                  throw new Error(result.error);
-                }
-
-                await showAlert({
-                  icon: "success",
-                  title: "Póliza creada exitosamente",
-                });
-                setOpenNewPolicyWizard(false);
-              } finally {
-                closeLoading();
-              }
-            }}
+            onSave={handleSavePolicy}
+          />
+          <AddPolicyToExistingCustomerWizardDialog
+            open={openAddPolicyWizard}
+            onClose={() => setOpenAddPolicyWizard(false)}
+            onSave={handleSavePolicy}
           />
         </Box>
       }

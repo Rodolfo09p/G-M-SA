@@ -3,7 +3,6 @@ import {
   Alert,
   Divider,
   Grid,
-  Paper,
   Stack,
   TextField,
   Typography,
@@ -33,6 +32,11 @@ type Props = {
   setBranch: (value: Ramo) => void;
   onClientFieldChange: (key: string, value: string) => void;
   onBranchFieldChange: (key: string, value: string) => void;
+  showClientFields?: boolean;
+  existingCustomerSummary?: {
+    id: string;
+    fullName: string;
+  };
 };
 
 export const DataStep = ({
@@ -50,6 +54,8 @@ export const DataStep = ({
   setBranch,
   onClientFieldChange,
   onBranchFieldChange,
+  showClientFields = true,
+  existingCustomerSummary,
 }: Props) => {
   const wideFieldKeys = new Set(["address", "insuredVehicle"]);
 
@@ -68,40 +74,44 @@ export const DataStep = ({
 
   return (
     <Stack spacing={2.5}>
-      <Paper variant="outlined" sx={{ p: 2.2, borderRadius: 3 }}>
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Autocomplete
-              size="medium"
-              fullWidth
-              disablePortal
-              options={companyOptions}
-              openOnFocus
-              autoHighlight
-              value={company || null}
-              onChange={(_, value) => setCompany(value ?? "")}
-              renderInput={(params) => (
-                <TextField {...params} label="Compania" required />
-              )}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Autocomplete
-              size="medium"
-              fullWidth
-              disablePortal
-              options={assignmentOptions}
-              openOnFocus
-              autoHighlight
-              value={assignment || null}
-              onChange={(_, value) => setAssignment(value ?? "")}
-              renderInput={(params) => (
-                <TextField {...params} label="Asignacion" required />
-              )}
-            />
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Autocomplete
+            size="medium"
+            fullWidth
+            disablePortal
+            options={companyOptions}
+            openOnFocus
+            autoHighlight
+            value={company || null}
+            onChange={(_, value) => setCompany(value ?? "")}
+            renderInput={(params) => (
+              <TextField {...params} label="Compañía" required />
+            )}
+          />
         </Grid>
-      </Paper>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Autocomplete
+            size="medium"
+            fullWidth
+            disablePortal
+            options={assignmentOptions}
+            openOnFocus
+            autoHighlight
+            value={assignment || null}
+            onChange={(_, value) => setAssignment(value ?? "")}
+            renderInput={(params) => (
+              <TextField {...params} label="Asignación" required />
+            )}
+          />
+        </Grid>
+      </Grid>
+
+      {existingCustomerSummary ? (
+        <Alert severity="info">
+          Cliente seleccionado: {existingCustomerSummary.fullName} ({existingCustomerSummary.id})
+        </Alert>
+      ) : null}
 
       <Autocomplete
         size="medium"
@@ -142,23 +152,27 @@ export const DataStep = ({
 
       <Divider />
 
-      <Typography variant="subtitle2" color="text.secondary">
-        Datos del cliente
-      </Typography>
-      <Grid container spacing={2}>
-        {currentClientFields.map((field, index) => (
-          <Grid
-            size={{ xs: 12, md: getGridSize(currentClientFields, index, field.key) }}
-            key={field.key}
-          >
-            <DynamicField
-              field={field}
-              value={clientData[field.key] ?? ""}
-              onChange={(next) => onClientFieldChange(field.key, next)}
-            />
+      {showClientFields ? (
+        <>
+          <Typography variant="subtitle2" color="text.secondary">
+            Datos del cliente
+          </Typography>
+          <Grid container spacing={2}>
+            {currentClientFields.map((field, index) => (
+              <Grid
+                size={{ xs: 12, md: getGridSize(currentClientFields, index, field.key) }}
+                key={field.key}
+              >
+                <DynamicField
+                  field={field}
+                  value={clientData[field.key] ?? ""}
+                  onChange={(next) => onClientFieldChange(field.key, next)}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </>
+      ) : null}
 
       {branch ? (
         <>
