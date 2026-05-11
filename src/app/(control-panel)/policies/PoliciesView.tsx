@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { PageLayout } from "@/components";
+import { PageLayout, useAppFeedback } from "@/components";
 import { Box, Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { PoliciesTable } from "./components/table/PoliciesTable";
@@ -15,9 +15,17 @@ import {
 import { NewPolicyWizardDialog } from "./components/dialogs/NewPolicyWizardDialog";
 import { addLocalPolicyFromWizard } from "./helpers/addLocalPolicyFromWizard";
 
+const MIN_CREATE_POLICY_DELAY_MS = 2000;
+
+const wait = (ms: number) =>
+  new Promise<void>((resolve) => {
+    globalThis.setTimeout(resolve, ms);
+  });
+
 export const PoliciesView = () => {
   const [openNewManagement, setOpenNewManagement] = useState(false);
   const [openNewPolicyWizard, setOpenNewPolicyWizard] = useState(false);
+  const { showLoading, showAlert } = useAppFeedback();
 
   const {
     assignmentFilter,
@@ -50,6 +58,13 @@ export const PoliciesView = () => {
     setOpenNewManagement(false);
   };
 
+  const handleShow = async () => {
+    await showAlert({
+      icon: "success",
+      title: "Funciona el show",
+    });
+  };
+
   return (
     <PageLayout
       header={
@@ -61,6 +76,9 @@ export const PoliciesView = () => {
             alignItems: "center",
           }}
         >
+          <Button variant="outlined" onClick={handleShow}>
+            TEST
+          </Button>
           <Typography variant="h5" fontWeight={600}>
             Pólizas
           </Typography>
@@ -98,15 +116,33 @@ export const PoliciesView = () => {
           <NewPolicyWizardDialog
             open={openNewPolicyWizard}
             onClose={() => setOpenNewPolicyWizard(false)}
-            onSave={(payload) => {
-              const result = addLocalPolicyFromWizard(payload);
+            onSave={async (payload) => {
+              const closeLoading = showLoading({
+                title: "Creando póliza",
+                text: "Por favor, espere...",
+              });
 
-              if (result.ok) {
+              try {
+                const result = addLocalPolicyFromWizard(payload);
+                await wait(MIN_CREATE_POLICY_DELAY_MS);
+
+                if (!result.ok) {
+                  await showAlert({
+                    icon: "error",
+                    title: "No se pudo crear la póliza",
+                    text: result.error,
+                  });
+                  throw new Error(result.error);
+                }
+
+                await showAlert({
+                  icon: "success",
+                  title: "Póliza creada exitosamente",
+                });
                 setOpenNewPolicyWizard(false);
-                return;
+              } finally {
+                closeLoading();
               }
-
-              globalThis.alert(result.error);
             }}
           />
         </Box>

@@ -20,28 +20,41 @@ import { DocumentsCard } from "./components/documents/DocumentsCard";
 const CustomerProfileView = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [customer, setCustomer] = useState<typeof MOCK_CUSTOMER | null>(null);
-  const { runWithFeedback, warning } = useAppFeedback();
+  const { showLoading, showAlert } = useAppFeedback();
 
   const handleSearch = async () => {
     if (searchTerm.trim() === "") {
-      warning("Ingresa una identificacion para buscar.");
+      await showAlert({
+        icon: "warning",
+        title: "Ingresa una identificación para buscar.",
+      });
       return;
     }
 
-    await runWithFeedback(
-      async () => {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 900);
-        });
+    const closeLoading = showLoading({
+      title: "Buscando cliente",
+      text: "Por favor, espere...",
+    });
 
-        setCustomer(MOCK_CUSTOMER);
-      },
-      {
-        loadingMessage: "Buscando cliente...",
-        successMessage: "Cliente cargado correctamente.",
-        errorMessage: "No se pudo completar la busqueda.",
-      },
-    );
+    try {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 900);
+      });
+
+      setCustomer(MOCK_CUSTOMER);
+
+      await showAlert({
+        icon: "success",
+        title: "Cliente cargado correctamente.",
+      });
+    } catch {
+      await showAlert({
+        icon: "error",
+        title: "No se pudo completar la búsqueda.",
+      });
+    } finally {
+      closeLoading();
+    }
   };
 
   const { openSections, toggle, toggleNested } = useFolders();

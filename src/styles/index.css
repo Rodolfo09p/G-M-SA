@@ -183,3 +183,55 @@ rgba(255,255,255, 0.2), 2.5em 0em 0 0em rgba(255,255,255, 0.2), 1.75em 1.75em 0
 0em rgba(255,255,255, 0.2), 0em 2.5em 0 0em rgba(255,255,255, 0.2), -1.8em 1.8em
 0 0em rgba(255,255,255, 0.5), -2.6em 0em 0 0em rgba(255,255,255, 0.7), -1.8em
 -1.8em 0 0em #ffffff; } }
+
+.gm-swal-popup {
+    border-radius: 16px;
+    padding: 1.5rem 1.5rem 1.2rem;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+}
+
+.swal2-container {
+    z-index: 99999 !important;
+}
+
+.gm-swal-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.gm-swal-text {
+    font-size: 0.95rem;
+    color: #475569;
+    margin-top: 0.35rem;
+}
+
+.gm-swal-confirm,
+.gm-swal-cancel {
+    border: 0;
+    border-radius: 10px;
+    padding: 0.58rem 1rem;
+    min-width: 108px;
+    font-weight: 700;
+    transition: transform 0.16s ease, opacity 0.16s ease;
+}
+
+.gm-swal-confirm {
+    background: #1d4ed8;
+    color: #fff;
+}
+
+.gm-swal-confirm:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
+
+.gm-swal-cancel {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.gm-swal-cancel:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}

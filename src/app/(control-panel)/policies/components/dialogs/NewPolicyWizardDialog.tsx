@@ -24,7 +24,7 @@ import { SummaryStep } from "./new-policy-wizard/SummaryStep";
 type Props = {
   open: boolean;
   onClose: () => void;
-  onSave: (payload: WizardPayload) => void;
+  onSave: (payload: WizardPayload) => Promise<void>;
 };
 
 export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
@@ -34,6 +34,7 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
     stepLabel,
     progressValue,
     isSummaryStep,
+    isSaving,
     personType,
     branch,
     company,
@@ -60,6 +61,14 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
     handleGenerateMockDocuments,
     ensureChecklistEntry,
   } = useNewPolicyWizard({ onClose, onSave });
+
+  const handleDialogClose = () => {
+    if (isSaving) {
+      return;
+    }
+
+    handleClose();
+  };
 
   const renderStepContent = () => {
     switch (WIZARD_STEPS[activeStep].key) {
@@ -117,16 +126,23 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={handleDialogClose}
+      maxWidth="sm"
+      fullWidth
+      disableEscapeKeyDown={isSaving}
+    >
       <DialogTitle sx={{ pr: 6 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <Typography variant="h5" fontWeight={800}>
-            Nuevo Cliente + Poliza
+            Nuevo Cliente + Póliza
           </Typography>
           <Chip size="small" color="secondary" label={stepLabel} />
         </Stack>
         <IconButton
           onClick={handleClose}
+          disabled={isSaving}
           sx={{ position: "absolute", right: 12, top: 12 }}
         >
           <CloseIcon />
@@ -169,13 +185,18 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
             <Button
               variant="text"
               onClick={handleBack}
-              disabled={activeStep === 0}
+              disabled={isSaving || activeStep === 0}
             >
-              Atras
+              Atrás
             </Button>
 
             <Stack direction="row" spacing={1}>
-              <Button variant="outlined" color="inherit" onClick={handleClose}>
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={handleClose}
+                disabled={isSaving}
+              >
                 Cancelar
               </Button>
               {isSummaryStep ? (
@@ -183,6 +204,7 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
                   variant="contained"
                   color="secondary"
                   onClick={handleSave}
+                  disabled={isSaving}
                 >
                   Guardar
                 </Button>
@@ -191,6 +213,7 @@ export const NewPolicyWizardDialog = ({ open, onClose, onSave }: Props) => {
                   variant="contained"
                   color="secondary"
                   onClick={handleNext}
+                  disabled={isSaving}
                 >
                   Siguiente
                 </Button>

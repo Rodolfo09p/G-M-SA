@@ -11,7 +11,7 @@ import type { ChecklistEntry, WizardPayload } from '../types/newPolicyWizard';
 
 type UseNewPolicyWizardArgs = {
 	onClose: () => void;
-	onSave: (payload: WizardPayload) => void;
+	onSave: (payload: WizardPayload) => Promise<void>;
 };
 
 const PAYMENT_PLAN_KEYS = new Set(['paymentDueDate', 'totalPremium', 'netPremium', 'installments', 'installmentValue']);
@@ -28,6 +28,7 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 	const [checklistState, setChecklistState] = useState<Record<string, ChecklistEntry>>({});
 	const [generatedDocuments, setGeneratedDocuments] = useState<string[]>([]);
 	const [stepError, setStepError] = useState('');
+	const [isSaving, setIsSaving] = useState(false);
 
 	const checklistItems = useMemo(() => {
 		if (!personType || !branch) {
@@ -102,6 +103,10 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 	};
 
 	const handleClose = () => {
+		if (isSaving) {
+			return;
+		}
+
 		resetState();
 		onClose();
 	};
@@ -178,7 +183,7 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 		}
 
 		if (!company || !assignment) {
-			setStepError('Selecciona compania y asignacion.');
+			setStepError('Selecciona compañía y asignación.');
 			return false;
 		}
 
@@ -197,7 +202,7 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 		}
 
 		if (branch === 'AUTOMOVIL' && !modelOptions.includes(branchData.vehicleModel ?? '')) {
-			setStepError('Selecciona un modelo valido segun la marca.');
+			setStepError('Selecciona un modelo válido según la marca.');
 			return false;
 		}
 
@@ -252,6 +257,10 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 	};
 
 	const handleNext = () => {
+		if (isSaving) {
+			return;
+		}
+
 		if (!validateStep()) {
 			return;
 		}
@@ -260,6 +269,10 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 	};
 
 	const handleBack = () => {
+		if (isSaving) {
+			return;
+		}
+
 		setStepError('');
 		setActiveStep((prev) => Math.max(prev - 1, 0));
 	};
@@ -272,23 +285,45 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 		setGeneratedDocuments(documents);
 	};
 
-	const handleSave = () => {
+	const handleSave = async () => {
+		if (isSaving) {
+			return;
+		}
+
+		if (!validateStep()) {
+			return;
+		}
+
 		if (!personType || !branch) {
 			return;
 		}
 
-		onSave({
-			personType,
-			branch,
-			company,
-			assignment,
-			clientData,
-			branchData,
-			checklist: checklistState,
-			generatedDocuments
-		});
+		setIsSaving(true);
+		setStepError('');
 
-		handleClose();
+		try {
+			await onSave({
+				personType,
+				branch,
+				company,
+				assignment,
+				clientData,
+				branchData,
+				checklist: checklistState,
+				generatedDocuments
+			});
+
+			handleClose();
+		} catch (caughtError) {
+			const errorMessage =
+				caughtError instanceof Error && caughtError.message
+					? caughtError.message
+					: 'No se pudo crear la póliza.';
+
+			setStepError(errorMessage);
+		} finally {
+			setIsSaving(false);
+		}
 	};
 
 	const stepLabel = `Paso ${activeStep + 1} de ${WIZARD_STEPS.length}`;
@@ -301,6 +336,7 @@ export const useNewPolicyWizard = ({ onClose, onSave }: UseNewPolicyWizardArgs) 
 		stepLabel,
 		progressValue,
 		isSummaryStep,
+		isSaving,
 		personType,
 		branch,
 		company,

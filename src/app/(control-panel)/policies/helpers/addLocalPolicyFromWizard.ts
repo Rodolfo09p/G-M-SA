@@ -130,7 +130,7 @@ export const addLocalPolicyFromWizard = (payload: WizardPayload) => {
   if (policyAlreadyExists) {
     return {
       ok: false,
-      error: "Ya existe una poliza con ese numero.",
+      error: "Ya existe una póliza con ese número.",
     };
   }
 

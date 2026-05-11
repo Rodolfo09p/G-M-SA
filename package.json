@@ -69,6 +69,7 @@
     "styled-components": "6.3.9",
     "stylis": "4.3.6",
     "stylis-plugin-rtl": "2.1.1",
+    "sweetalert2": "^11.26.24",
     "type-fest": "4.41.0",
     "uuid": "13.0.0",
     "zod": "4.3.6"
