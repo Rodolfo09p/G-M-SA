@@ -76,21 +76,21 @@ const navigationConfig: FuseNavItemType[] = [
 			}
 		]
 	},
-	{
-		id: 'seguimiento',
-		title: 'SEGUIMIENTO',
-		type: 'group',
-		icon: 'heroicons-outline:bell-alert',
-		children: [
-			{
-				id: 'alerts',
-				title: 'Seguimiento',
-				type: 'item',
-				icon: 'heroicons-outline:clipboard-document-list',
-				url: 'alerts'
-			}
-		]
-	},
+	// {
+	// 	id: 'seguimiento',
+	// 	title: 'SEGUIMIENTO',
+	// 	type: 'group',
+	// 	icon: 'heroicons-outline:bell-alert',
+	// 	children: [
+	// 		{
+	// 			id: 'alerts',
+	// 			title: 'Seguimiento',
+	// 			type: 'item',
+	// 			icon: 'heroicons-outline:clipboard-document-list',
+	// 			url: 'alerts'
+	// 		}
+	// 	]
+	// },
 	{
 		id: 'modulo-reportes',
 		title: 'REPORTES',

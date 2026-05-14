@@ -66,21 +66,21 @@ export const CustomersView = () => {
       { field: "phoneMobile", headerName: "Celular", minWidth: 130, flex: 0.8 },
     //   { field: "email", headerName: "Correo", minWidth: 220, flex: 1.2 },
       { field: "policyCount", headerName: "Polizas", minWidth: 100, type: "number", align: "center", headerAlign: "center" },
-      {
-        field: "activePolicyCount",
-        headerName: "Activas",
-        minWidth: 110,
-        align: "center",
-        headerAlign: "center",
-        renderCell: (params) => (
-          <Chip
-            label={params.value}
-            size="small"
-            color={Number(params.value) > 0 ? "success" : "default"}
-            variant={Number(params.value) > 0 ? "filled" : "outlined"}
-          />
-        ),
-      },
+      // {
+      //   field: "activePolicyCount",
+      //   headerName: "Activas",
+      //   minWidth: 110,
+      //   align: "center",
+      //   headerAlign: "center",
+      //   renderCell: (params) => (
+      //     <Chip
+      //       label={params.value}
+      //       size="small"
+      //       color={Number(params.value) > 0 ? "success" : "default"}
+      //       variant={Number(params.value) > 0 ? "filled" : "outlined"}
+      //     />
+      //   ),
+      // },
     ],
     []
   );
