@@ -2,7 +2,10 @@ import { Button, Chip, Stack } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { ClaimStatus, ClaimTableRow } from "../../types/types";
 
-const STATUS_COLOR_MAP: Record<ClaimStatus, "default" | "warning" | "info" | "success" | "error"> = {
+const STATUS_COLOR_MAP: Record<
+  ClaimStatus,
+  "default" | "warning" | "info" | "success" | "error"
+> = {
   reported: "warning",
   in_review: "info",
   documents_pending: "warning",
@@ -33,7 +36,11 @@ const getClaimsColumns = (
     minWidth: 170,
     flex: 0.8,
     renderCell: ({ row }) => (
-      <Chip size="small" color={STATUS_COLOR_MAP[row.statusCode]} label={row.status} />
+      <Chip
+        size="small"
+        color={STATUS_COLOR_MAP[row.statusCode]}
+        label={row.status}
+      />
     ),
   },
   {
@@ -57,16 +64,17 @@ const getClaimsColumns = (
     filterable: false,
     disableColumnMenu: true,
     renderCell: ({ row }) => {
-      const disableAdvance = row.statusCode === "closed" || row.statusCode === "rejected";
+      const disableAdvance =
+        row.statusCode === "closed" || row.statusCode === "rejected";
 
       return (
         <Stack direction="row" spacing={1}>
-          <Button size="small" onClick={() => onViewDetail(row)}>
+          <Button size="small" color="info" onClick={() => onViewDetail(row)}>
             Ver detalle
           </Button>
           <Button
             size="small"
-            variant="outlined"
+            color="success"
             onClick={() => onAdvanceStatus(row)}
             disabled={disableAdvance}
           >

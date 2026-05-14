@@ -25,16 +25,19 @@ const DetailRow = ({ label, value }: { label: string; value: string }) => (
 );
 
 const groupNotifications = (notifications: ClaimNotification[]) => {
-  return notifications.reduce<Record<string, ClaimNotification[]>>((acc, item) => {
-    const key = item.category;
+  return notifications.reduce<Record<string, ClaimNotification[]>>(
+    (acc, item) => {
+      const key = item.category;
 
-    if (!acc[key]) {
-      acc[key] = [];
-    }
+      if (!acc[key]) {
+        acc[key] = [];
+      }
 
-    acc[key].push(item);
-    return acc;
-  }, {});
+      acc[key].push(item);
+      return acc;
+    },
+    {},
+  );
 };
 
 const ClaimDetailDrawer = (props: ClaimDetailDrawerProps) => {
@@ -105,12 +108,16 @@ const ClaimDetailDrawer = (props: ClaimDetailDrawerProps) => {
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
           <Chip
             size="small"
-            color={selectedClaim.checklist.incidentReport ? "success" : "default"}
+            color={
+              selectedClaim.checklist.incidentReport ? "success" : "default"
+            }
             label="Informe del siniestro"
           />
           <Chip
             size="small"
-            color={selectedClaim.checklist.insuredIdCopy ? "success" : "default"}
+            color={
+              selectedClaim.checklist.insuredIdCopy ? "success" : "default"
+            }
             label="Copia de cédula"
           />
           <Chip
@@ -123,29 +130,6 @@ const ClaimDetailDrawer = (props: ClaimDetailDrawerProps) => {
             color={selectedClaim.checklist.photos ? "success" : "default"}
             label="Fotografías"
           />
-        </Stack>
-
-        <Divider sx={{ my: 2 }} />
-
-        <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Notificaciones agrupadas
-        </Typography>
-
-        <Stack spacing={1.2}>
-          {Object.entries(groupedNotifications).map(([group, entries]) => (
-            <Box key={group} sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1.5, p: 1.25 }}>
-              <Typography variant="caption" color="text.secondary">
-                {group}
-              </Typography>
-              <Stack spacing={0.8} sx={{ mt: 0.8 }}>
-                {entries.map((entry) => (
-                  <Typography key={entry.id} variant="body2">
-                    • {entry.message}
-                  </Typography>
-                ))}
-              </Stack>
-            </Box>
-          ))}
         </Stack>
 
         <Divider sx={{ my: 2 }} />
