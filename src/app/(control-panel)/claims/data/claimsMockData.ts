@@ -1,5 +1,7 @@
 import { ClaimEntity, ClaimStatus, NewClaimPayload } from "../types/types";
 
+const CLAIMS_NOTIFICATIONS_UPDATED_EVENT = "gm:claims-notifications-updated";
+
 const CLAIM_STATUS_FLOW: ClaimStatus[] = [
   "reported",
   "in_review",
@@ -12,6 +14,14 @@ const TODAY_ISO = new Date().toISOString().slice(0, 10);
 
 const createNotificationId = () =>
   `NTF-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+const notifyClaimsNotificationsUpdated = () => {
+  if (globalThis.window === undefined) {
+    return;
+  }
+
+  globalThis.window.dispatchEvent(new Event(CLAIMS_NOTIFICATIONS_UPDATED_EVENT));
+};
 
 const getNextClaimNumber = () => {
   const maxNumber = claimsMockData.reduce((currentMax, claim) => {
@@ -196,6 +206,7 @@ const createLocalClaim = (payload: NewClaimPayload) => {
   };
 
   claimsMockData.unshift(newClaim);
+  notifyClaimsNotificationsUpdated();
 
   return { ok: true as const, claimNumber };
 };
@@ -232,7 +243,87 @@ const advanceLocalClaimStatus = (claimNumber: string) => {
     read: false,
   });
 
+  notifyClaimsNotificationsUpdated();
+
   return { ok: true as const, nextStatus };
 };
 
-export { CLAIM_STATUS_FLOW, claimsMockData, createLocalClaim, advanceLocalClaimStatus };
+const markClaimNotificationAsRead = (notificationId: string) => {
+  for (const claim of claimsMockData) {
+    const notification = claim.notifications.find((item) => item.id === notificationId);
+
+    if (!notification) {
+      continue;
+    }
+
+    notification.read = true;
+    notifyClaimsNotificationsUpdated();
+    return { ok: true as const };
+  }
+
+  return { ok: false as const, error: "No se encontró la notificación." };
+};
+
+const markAllClaimNotificationsAsRead = () => {
+  claimsMockData.forEach((claim) => {
+    claim.notifications.forEach((notification) => {
+      notification.read = true;
+    });
+  });
+
+  notifyClaimsNotificationsUpdated();
+};
+
+const mapClaimCategoryToQuickType = (category: string) => {
+  if (category === "Pago") {
+    return "payment" as const;
+  }
+
+  if (category === "Inspección") {
+    return "renewal" as const;
+  }
+
+  return "document" as const;
+};
+
+const getQuickPanelNotificationsFromClaims = (limit = 3) => {
+  const items = claimsMockData
+    .flatMap((claim) =>
+      claim.notifications.map((notification) => ({
+        id: `claim-${notification.id}`,
+        title: `Reclamo ${claim.claimNumber}`,
+        detail: notification.message,
+        type: mapClaimCategoryToQuickType(notification.category),
+        createdAt: notification.createdAt,
+        read: notification.read,
+      })),
+    )
+    .filter((notification) => !notification.read)
+    .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+
+  return items.slice(0, limit);
+};
+
+const subscribeToClaimsNotificationsUpdated = (callback: () => void) => {
+  if (globalThis.window === undefined) {
+    return () => {};
+  }
+
+  const listener = () => callback();
+  globalThis.window.addEventListener(CLAIMS_NOTIFICATIONS_UPDATED_EVENT, listener);
+
+  return () => {
+    globalThis.window.removeEventListener(CLAIMS_NOTIFICATIONS_UPDATED_EVENT, listener);
+  };
+};
+
+export {
+  CLAIM_STATUS_FLOW,
+  claimsMockData,
+  createLocalClaim,
+  advanceLocalClaimStatus,
+  markClaimNotificationAsRead,
+  markAllClaimNotificationsAsRead,
+  getQuickPanelNotificationsFromClaims,
+  subscribeToClaimsNotificationsUpdated,
+};

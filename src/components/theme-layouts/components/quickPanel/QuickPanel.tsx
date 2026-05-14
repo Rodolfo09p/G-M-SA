@@ -59,7 +59,7 @@ function QuickPanel() {
 				</Box>
 				<Divider />
 				<List>
-					<ListSubheader component="div">Ultimas 3</ListSubheader>
+					<ListSubheader component="div">Ultimas 5</ListSubheader>
 					{data.notifications.map((notification) => (
 						<ListItem key={notification.id} alignItems="flex-start">
 							<ListItemIcon className="min-w-9">
