@@ -95,7 +95,7 @@ const navigationConfig: FuseNavItemType[] = [
 				title: 'Cobranza',
 				type: 'item',
 				icon: 'heroicons-outline:banknotes',
-				url: ''
+				url: 'collections'
 			},
 		]
 	},
