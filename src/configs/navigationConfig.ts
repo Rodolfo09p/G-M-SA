@@ -50,6 +50,13 @@ const navigationConfig: FuseNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:exclamation-circle',
 				url: 'claims'
+			},
+			{
+				id: 'collections-component',
+				title: 'Cobranza',
+				type: 'item',
+				icon: 'heroicons-outline:banknotes',
+				url: 'collections'
 			}
 		]
 	},
@@ -91,11 +98,11 @@ const navigationConfig: FuseNavItemType[] = [
 		icon: 'heroicons-outline:presentation-chart-line',
 		children: [
 			{
-				id: 'reports-collections',
-				title: 'Cobranza',
+				id: 'reports-home',
+				title: 'Reportes',
 				type: 'item',
-				icon: 'heroicons-outline:banknotes',
-				url: 'collections'
+				icon: 'heroicons-outline:document-chart-bar',
+				url: 'reports'
 			},
 		]
 	},
